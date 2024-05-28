@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 
 const userSchema = new mongoose.Schema(
   {
+    _id: { type: String, default: uuidv4 },
     name: {
       type: String,
       required: [true, 'Please enter a name'],
@@ -16,10 +18,9 @@ const userSchema = new mongoose.Schema(
       unique: true,
       match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
     },
+    imageUrl: { type: String },
     password: {
       type: String,
-      required: [true, 'Please enter a password'],
-      minlength: [6, 'Minimum password length is 6 characters'],
     },
     role: {
       type: String,
@@ -32,9 +33,15 @@ const userSchema = new mongoose.Schema(
 
 // firing a function before saving a document
 userSchema.pre('save', async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+  try {
+    if (this.password && this.password !== 'undefined') {
+      const salt = await bcrypt.genSalt();
+      this.password = await bcrypt.hash(this.password, salt);
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = mongoose.model('User', userSchema);

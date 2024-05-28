@@ -1,10 +1,15 @@
 const { Router } = require('express');
 const { AuthMiddlewares } = require('../../middlewares/');
 const { UserController } = require('../../controllers');
+const bodyParser = require('body-parser');
 
 const router = Router();
 
-router.post('/webhooks', UserController.webhooks);
+router.post(
+  '/webhooks',
+  bodyParser.raw({ type: 'application/json' }),
+  UserController.webhooks
+);
 
 router.post(
   '/signup',

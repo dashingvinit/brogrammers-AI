@@ -8,8 +8,10 @@ const userRepository = new UserRepository();
 async function createUser(data) {
   try {
     let user = await userRepository.create({
+      _id: data._id,
       name: data.name,
       email: data.email,
+      imageUrl: data.imageUrl,
       password: data.password,
       role: data.role,
     });
