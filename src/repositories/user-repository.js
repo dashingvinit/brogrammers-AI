@@ -12,6 +12,11 @@ class UserRepository extends CrudRepository {
     });
     return user;
   }
+
+  async getAllAdmin() {
+    const admins = await User.find({ role: 'admin' });
+    return admins;
+  }
 }
 
 module.exports = UserRepository;

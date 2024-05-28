@@ -11,6 +11,7 @@ async function createUser(data) {
       name: data.name,
       email: data.email,
       password: data.password,
+      role: data.role,
     });
     const jwt = Auth.createToken({
       userId: user._id,

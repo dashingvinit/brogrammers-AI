@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please enter an email'],
       lowercase: true,
-      validator: [isEmail, 'Please enter a valid email'],
+      validate: [isEmail, 'Please enter a valid email'],
       unique: true,
       match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
     },
@@ -23,8 +23,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['student', 'mentor'],
-      default: 'student',
+      enum: ['user', 'admin'],
+      default: 'user',
     },
   },
   { timestamps: true }

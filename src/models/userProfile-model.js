@@ -3,16 +3,16 @@ const { isURL } = require('validator');
 
 // Define a sub-schema for courses
 const courseSchema = new mongoose.Schema({
-  courseID: { type: String, required: true },
-  count: { type: Number, default: 0 },
-  score: { type: Number, default: 0 },
+  courseID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course',
+    required: true,
+  },
 });
 
 // Define a sub-schema for projects
 const projectSchema = new mongoose.Schema({
   projectID: { type: String, required: true },
-  count: { type: Number, default: 0 },
-  score: { type: Number, default: 0 },
 });
 
 const profileSchema = new mongoose.Schema({

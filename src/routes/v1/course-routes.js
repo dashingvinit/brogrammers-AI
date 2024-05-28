@@ -1,37 +1,23 @@
 const express = require('express');
 const router = express.Router();
 
-const { CourseController } = require('../../controllers');
+const { CourseController, TopicController } = require('../../controllers');
 
 // Course Routes
-router.get('/courses', CourseController.getCourses);
-router.get('/courses/:id', CourseController.getCourse);
-// router.post('/courses', CourseController.createCourse);
-// router.put('/courses/:id', CourseController.updateCourse);
-// router.delete('/courses/:id', CourseController.deleteCourse);
+router.get('/all', CourseController.getCourses);
+router.get('/admin', CourseController.getAdminCourses);
+router.get('/:id', CourseController.getCourse);
 
-// // Unit Routes
-// router.get('/courses/:courseId/units', CourseController.getUnits);
+router.post('/new', CourseController.createCourse);
+router.put('/:id', CourseController.updateCourse);
+router.delete('/:id', CourseController.deleteCourse);
+
+// Topic Routes
+router.get('/topic/:userId/:title', TopicController.getTopic);
 // router.get('/courses/:courseId/units/:id', CourseController.getUnit);
 // router.post('/courses/:courseId/units', CourseController.createUnit);
 // router.put('/courses/:courseId/units/:id', CourseController.updateUnit);
 // router.delete('/courses/:courseId/units/:id', CourseController.deleteUnit);
-
-//   getQuizzes,
-//   getQuiz,
-//   createQuiz,
-//   updateQuiz,
-//   deleteQuiz,
-//   getAssignments,
-//   getAssignment,
-//   createAssignment,
-//   updateAssignment,
-//   deleteAssignment,
-//   getDiscussions,
-//   getDiscussion,
-//   createDiscussion,
-//   updateDiscussion,
-//   deleteDiscussion,
 
 // // AI-Generated Quiz Routes
 // router.get('/courses/:courseId/quizzes', getQuizzes);
@@ -39,13 +25,6 @@ router.get('/courses/:id', CourseController.getCourse);
 // router.post('/courses/:courseId/quizzes', createQuiz);
 // router.put('/courses/:courseId/quizzes/:quizId', updateQuiz);
 // router.delete('/courses/:courseId/quizzes/:quizId', deleteQuiz);
-
-// // Assignment Routes
-// router.get('/courses/:courseId/assignments', getAssignments);
-// router.get('/courses/:courseId/assignments/:assignmentId', getAssignment);
-// router.post('/courses/:courseId/assignments', createAssignment);
-// router.put('/courses/:courseId/assignments/:assignmentId', updateAssignment);
-// router.delete('/courses/:courseId/assignments/:assignmentId', deleteAssignment);
 
 // // Discussion Routes
 // router.get('/courses/:courseId/discussions', getDiscussions);

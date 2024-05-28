@@ -4,6 +4,8 @@ const { UserController } = require('../../controllers');
 
 const router = Router();
 
+router.post('/webhooks', UserController.webhooks);
+
 router.post(
   '/signup',
   AuthMiddlewares.validateAuthRequest,

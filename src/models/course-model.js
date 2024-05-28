@@ -1,41 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const topicSchema = new Schema({
-  title: { type: String, required: true },
-  text: { type: String, required: true }, // Markdown text
-  suggestedVideos: [{ type: String }], // Array of suggested video URLs
-  topicVideo: { type: String }, // URL of the topic video
-});
-
-const unitSchema = new Schema({
-  title: { type: String, required: true },
-  syllabus: {
-    type: String,
+const courseSchema = new Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
-  handwrittenNotes: { type: String },
-  detailedNotes: { type: String },
-  youtubeVideos: [{ type: String }],
-  topics: [topicSchema], // Array of topics using the topicSchema
-});
-
-const aiGeneratedQuizSchema = new Schema({
   title: { type: String, required: true },
-  questions: [
+  units: [
     {
-      question: { type: String, required: true },
-      options: [String],
-      correctOption: { type: String, required: true },
+      title: { type: String },
+      time: { type: String },
+      topics: [{ type: String }],
     },
   ],
-});
-
-const courseSchema = new Schema({
-  title: { type: String, required: true },
-  units: [unitSchema],
-  aiGeneratedQuizzes: [aiGeneratedQuizSchema],
+  aiGeneratedQuizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
   worksheets: [{ title: { type: String } }],
+  handwrittenNotes: { type: String },
+  detailedNotes: { type: String },
 });
 
 module.exports = mongoose.model('Course', courseSchema);
