@@ -5,7 +5,7 @@ const contentTypes = ['heading', 'sub_heading', 'text', 'image', 'code'];
 const blogSchema = new mongoose.Schema({
   title: String,
   authorId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
   }, // User ID of the author
   coverImage: String, // URL to the cover image

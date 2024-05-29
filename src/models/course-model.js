@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const courseSchema = new Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
     required: true,
   },
@@ -15,10 +15,13 @@ const courseSchema = new Schema({
       topics: [{ type: String }],
     },
   ],
+  keyNotes: [{ title: { type: String }, content: { type: String } }],
   aiGeneratedQuizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
-  worksheets: [{ title: { type: String } }],
+  worksheets: [{ title: { type: String }, link: { type: String } }],
+  syllabus: { type: String },
   handwrittenNotes: { type: String },
   detailedNotes: { type: String },
+  lastViewed: { type: Date },
 });
 
 module.exports = mongoose.model('Course', courseSchema);

@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const topicSchema = new Schema({
-  userId: {
+  courseId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Course',
     required: true,
   },
   title: { type: String, required: true },
