@@ -8,7 +8,7 @@ router.get('/all', CourseController.getCourses);
 router.get('/all/:id', CourseController.getCourses);
 router.get('/admin', CourseController.getAdminCourses);
 router.get('/:id', CourseController.getCourse);
-router.get('/recent', CourseController.getRecent);
+// router.get('/recent', CourseController.getRecent);
 
 router.post('/new', CourseController.createCourse);
 router.put('/:id', CourseController.updateCourse);
