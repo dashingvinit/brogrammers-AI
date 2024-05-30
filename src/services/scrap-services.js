@@ -23,7 +23,7 @@ async function scrapeGoogleSearch(query) {
     const suggestedVideos = [];
     let count = 0;
     searchResults.each((index, result) => {
-      if (count >= 5) {
+      if (count >= 4) {
         return false; // Break out of the loop
       }
       const link = $(result)

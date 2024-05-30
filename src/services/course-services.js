@@ -1,4 +1,8 @@
-const { CourseRepository, UserRepository } = require('../repositories');
+const {
+  RecentRepository,
+  CourseRepository,
+  UserRepository,
+} = require('../repositories');
 const AppError = require('../utils/errors/app-error');
 const { StatusCodes } = require('http-status-codes');
 

@@ -6,7 +6,7 @@ const topicRepository = new TopicRepository();
 
 async function getTopic(id, title) {
   try {
-    const courses = await topicRepository.getByUserId(id, title);
+    const courses = await topicRepository.getByCourseId(id, title);
     return courses;
   } catch (error) {
     if (error instanceof AppError) throw error;

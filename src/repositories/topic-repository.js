@@ -6,8 +6,8 @@ class TopicRepository extends CrudRepository {
     super(Topic);
   }
 
-  async getByUserId(id, title) {
-    const topic = await Topic.findOne({ userId: id, title });
+  async getByCourseId(id, title) {
+    const topic = await Topic.findOne({ courseId: id, title });
     return topic;
   }
 }

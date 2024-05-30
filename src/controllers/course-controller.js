@@ -39,6 +39,17 @@ async function getCourse(req, res) {
   }
 }
 
+async function getRecent(req, res) {
+  try {
+    const course = await CourseService.getRecent(req.params.id);
+    successResponse.data = course;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.INTERNAL_SERVER_ERROR).json(errorResponse);
+  }
+}
+
 async function createCourse(req, res) {
   try {
     await new Promise((resolve) => {
@@ -46,9 +57,9 @@ async function createCourse(req, res) {
       else req.on('end', resolve);
     });
     const { userId, title, units, syllabus } = req.body;
-
+    // console.log(userId, title, units, syllabus);
     let data = null;
-    if (units == null)
+    if (units == null || units == 'undefined' || units[0].name == '')
       data = await OpenAIService.getRoadMap(title, syllabus, userId);
     else
       data = await CourseService.createCourse({
@@ -93,6 +104,7 @@ module.exports = {
   getCourses,
   getAdminCourses,
   getCourse,
+  getRecent,
 
   createCourse,
   updateCourse,

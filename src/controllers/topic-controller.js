@@ -6,7 +6,7 @@ const { OpenAIService } = require('../services');
 async function getTopic(req, res) {
   try {
     let topic = await TopicService.getTopic(
-      req.params.userId,
+      req.params.courseId,
       req.params.title
     );
     if (!topic) {
@@ -18,7 +18,7 @@ async function getTopic(req, res) {
     if (error.message === 'Cannot find topic') {
       try {
         topic = await OpenAIService.getTopic(
-          req.params.userId,
+          req.params.courseId,
           req.params.title
         );
         successResponse.data = topic;
