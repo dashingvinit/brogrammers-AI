@@ -17,6 +17,29 @@ class UserRepository extends CrudRepository {
     const admins = await User.find({ role: 'admin' });
     return admins;
   }
+
+  async getPopulate(id) {
+    const populated = await User.findById(id).populate('recentlyViewed.course');
+    return populated;
+  }
+
+  async getContinue(id) {
+    const populated = await User.findById(id).populate('recentBlog.blog');
+    return populated;
+  }
+
+  async getBookmarked(id) {
+    const populated = await User.findById(id).populate('bookMarks');
+    return populated;
+  }
+
+  async removeRecentlyViewed(userId, courseId) {
+    const result = await User.updateOne(
+      { _id: userId },
+      { $pull: { recentlyViewed: { course: courseId } } }
+    );
+    return result;
+  }
 }
 
 module.exports = UserRepository;

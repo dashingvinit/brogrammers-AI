@@ -91,10 +91,49 @@ async function patchUser(req, res) {
   }
 }
 
+async function updateRecent(req, res) {
+  try {
+    const { userId, courseId } = req.params;
+    const user = await UserService.viewCourse(userId, courseId);
+    successResponse.data = user;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
+  }
+}
+
+async function updateContinue(req, res) {
+  try {
+    const { userId, blogId } = req.params;
+    const user = await UserService.updateContinue(userId, blogId);
+    successResponse.data = user;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
+  }
+}
+
+async function updateBookmarked(req, res) {
+  try {
+    const { userId, blogId } = req.params;
+    const user = await UserService.updateBookmarked(userId, blogId);
+    successResponse.data = user;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
+  }
+}
+
 module.exports = {
   webhooks,
   signup,
   login,
   deleteUser,
   patchUser,
+  updateRecent,
+  updateContinue,
+  updateBookmarked,
 };

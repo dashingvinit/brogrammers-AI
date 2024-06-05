@@ -19,6 +19,7 @@ async function getTopic(req, res) {
       try {
         topic = await OpenAIService.getTopic(
           req.params.courseId,
+          req.params.subject,
           req.params.title
         );
         successResponse.data = topic;
@@ -34,11 +35,11 @@ async function getTopic(req, res) {
   }
 }
 
-async function updateUnit(req, res) {
+async function updateTopic(req, res) {
   // Implement updateUnit functionality
 }
 
-async function deleteUnit(req, res) {
+async function deleteTopic(req, res) {
   // Implement deleteUnit functionality
 }
 

@@ -27,4 +27,8 @@ router.delete('/:id', UserController.deleteUser);
 
 router.patch('/:id', UserController.patchUser);
 
+router.patch('/:userId/:courseId', UserController.updateRecent);
+router.patch('/continue/:userId/:blogId', UserController.updateContinue);
+router.patch('/bookmark/:userId/:blogId', UserController.updateBookmarked);
+
 module.exports = router;

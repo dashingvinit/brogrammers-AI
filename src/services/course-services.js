@@ -1,17 +1,31 @@
 const {
-  RecentRepository,
   CourseRepository,
   UserRepository,
+  TopicRepository,
 } = require('../repositories');
 const AppError = require('../utils/errors/app-error');
 const { StatusCodes } = require('http-status-codes');
 
 const courseRepository = new CourseRepository();
 const userRepository = new UserRepository();
+const topicRepository = new TopicRepository();
 
 async function getCourses() {
   try {
     const courses = await courseRepository.getAll();
+    return courses;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError(
+      'Cannot find courses',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function getCoursesById(id) {
+  try {
+    const courses = await courseRepository.getAllByIds(id);
     return courses;
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -45,6 +59,19 @@ async function getCourse(id) {
     if (error instanceof AppError) throw error;
     throw new AppError(
       'Cannot find the course',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function getRecent(id) {
+  try {
+    const recent = await userRepository.getPopulate(id);
+    return recent;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError(
+      'Cannot find courses',
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
@@ -95,8 +122,10 @@ async function updateCourse(id, updates) {
   }
 }
 
-async function deleteCourse(id) {
+async function deleteCourse(userdId, id) {
   try {
+    const topics = await topicRepository.destroyAll(id);
+    const recents = await userRepository.removeRecentlyViewed(userdId, id);
     const course = await courseRepository.destroy(id);
     if (!course) {
       throw new AppError(
@@ -104,13 +133,20 @@ async function deleteCourse(id) {
         StatusCodes.BAD_REQUEST
       );
     }
-  } catch (error) {}
+  } catch (error) {
+    throw new AppError(
+      'Cannot delete the course',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
 }
 
 module.exports = {
   getCourses,
+  getCoursesById,
   getAdminCourses,
   getCourse,
+  getRecent,
 
   createCourse,
   updateCourse,

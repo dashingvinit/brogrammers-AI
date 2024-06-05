@@ -1,8 +1,9 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-async function scrapeGoogleSearch(query) {
+async function scrapeGoogleSearch(topic, title) {
   try {
+    const query = `${topic} ${title}`;
     const url = `https://www.google.com/search?q=${query.replace(
       ' ',
       '+'

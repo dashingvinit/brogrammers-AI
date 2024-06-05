@@ -10,5 +10,10 @@ class TopicRepository extends CrudRepository {
     const topic = await Topic.findOne({ courseId: id, title });
     return topic;
   }
+
+  async destroyAll(courseId) {
+    const topics = await Topic.deleteMany({ courseId });
+    return topics;
+  }
 }
 module.exports = TopicRepository;

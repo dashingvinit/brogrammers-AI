@@ -27,6 +27,21 @@ const userSchema = new mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user',
     },
+    recentlyViewed: [
+      {
+        course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
+        viewedAt: { type: Date, default: Date.now },
+      },
+    ],
+    bookMarks: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'PlacementStory' },
+    ],
+    recentBlog: [
+      {
+        blog: { type: mongoose.Schema.Types.ObjectId, ref: 'PlacementStory' },
+        viewedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

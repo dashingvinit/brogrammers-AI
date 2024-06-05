@@ -84,9 +84,73 @@ async function patchUser(id, data) {
   }
 }
 
+async function viewCourse(userId, courseId) {
+  try {
+    const user = await userRepository.get(userId);
+    user.recentlyViewed = user.recentlyViewed.filter(
+      (entry) => !entry.course.equals(courseId)
+    );
+    user.recentlyViewed.unshift({ course: courseId, viewedAt: new Date() });
+
+    if (user.recentlyViewed.length > 10) {
+      user.recentlyViewed.pop();
+    }
+    const response = await userRepository.update(userId, user);
+    return response;
+  } catch (error) {
+    throw new AppError(
+      'Cannot update data of the user',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function updateContinue(userId, blogId) {
+  try {
+    const user = await userRepository.get(userId);
+    user.recentBlog = user.recentBlog.filter(
+      (entry) => !entry.blog.equals(blogId)
+    );
+    user.recentBlog.unshift({ blog: blogId, viewedAt: new Date() });
+
+    if (user.recentBlog.length > 10) {
+      user.recentBlog.pop();
+    }
+    const response = await userRepository.update(userId, user);
+    return response;
+  } catch (error) {
+    throw new AppError(
+      'Cannot update data of the user',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function updateBookmarked(userId, blogId) {
+  try {
+    const user = await userRepository.get(userId);
+    const bookmarkIndex = user.bookMarks.indexOf(blogId);
+    if (bookmarkIndex !== -1) {
+      user.bookMarks.splice(bookmarkIndex, 1);
+    } else {
+      user.bookMarks.push(blogId);
+    }
+    const response = await userRepository.update(userId, user);
+    return response;
+  } catch (error) {
+    throw new AppError(
+      'Cannot update bookmark data of the user',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   createUser,
   loginUser,
   deleteUser,
   patchUser,
+  viewCourse,
+  updateContinue,
+  updateBookmarked,
 };

@@ -2,22 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const placementStorySchema = new Schema({
-  studentName: {
-    type: String,
-    required: true,
-  },
-  academicBackground: {
-    type: String,
-    required: true,
-  },
-  jobRole: {
-    type: String,
-    required: true,
-  },
-  companyName: {
-    type: String,
-    required: true,
-  },
+  userId: { type: String, ref: 'User' },
+  studentName: { type: String, required: true },
+  academicBackground: { type: String, required: true },
+  jobRole: { type: String, required: true },
+  companyName: { type: String, required: true },
   interviewProcess: [
     {
       stage: {
@@ -39,18 +28,8 @@ const placementStorySchema = new Schema({
       notes: String,
     },
   ],
-  preparationTips: [
-    {
-      tip: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
-  personalExperience: {
-    type: String,
-    required: true,
-  },
+  preparationTips: [{ tip: { type: String } }],
+  personalExperience: { type: String, required: true },
   resourcesUsed: [
     {
       resourceName: {
@@ -60,12 +39,14 @@ const placementStorySchema = new Schema({
       resourceLink: String,
     },
   ],
-  submissionDate: {
-    type: Date,
-    default: Date.now,
-  },
+  instagram: { type: String },
+  tweeter: { type: String },
+  linkedIn: { type: String },
+  site: { type: String },
+  markdown: { type: Schema.Types.Mixed },
+  likes: { userId: { type: String, ref: 'User' } },
+  submissionDate: { type: Date, default: Date.now },
+  createdAt: { type: Date, required: true, index: true },
 });
 
-const PlacementStory = mongoose.model('PlacementStory', placementStorySchema);
-
-module.exports = PlacementStory;
+module.exports = mongoose.model('PlacementStory', placementStorySchema);

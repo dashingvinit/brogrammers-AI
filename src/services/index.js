@@ -4,4 +4,5 @@ module.exports = {
   UserService: require('./user-services'),
   CourseService: require('./course-services'),
   TopicService: require('./topic-services'),
+  PlacementService: require('./placement-services'),
 };
