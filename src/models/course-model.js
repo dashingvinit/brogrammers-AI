@@ -19,8 +19,8 @@ const courseSchema = new Schema({
   aiGeneratedQuizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
   worksheets: [{ title: { type: String }, link: { type: String } }],
   syllabus: { type: String },
+  resources: [{ type: String }],
   handwrittenNotes: { type: String },
-  detailedNotes: { type: String },
   lastViewed: { type: Date },
 });
 

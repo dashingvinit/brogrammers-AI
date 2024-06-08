@@ -11,7 +11,8 @@ router.get('/:id', CourseController.getCourse);
 router.get('/recent/:id', CourseController.getRecent);
 
 router.post('/new', CourseController.createCourse);
-router.put('/:id', CourseController.updateCourse);
+router.patch('/:id', CourseController.updateCourse);
+
 router.delete('/:userId/:id', CourseController.deleteCourse);
 
 // Topic Routes

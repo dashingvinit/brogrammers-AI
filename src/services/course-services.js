@@ -103,11 +103,33 @@ async function updateCourse(id, updates) {
       return res.status(404).json({ error: 'Course not found' });
     }
 
+    // Update simple fields
     if (updates.title) {
       course.title = updates.title;
     }
     if (updates.syllabus) {
       course.syllabus = updates.syllabus;
+    }
+    if (updates.handwrittenNotes) {
+      course.handwrittenNotes = updates.handwrittenNotes;
+    }
+    if (updates.detailedNotes) {
+      course.detailedNotes = updates.detailedNotes;
+    }
+
+    // Update array fields
+    if (updates.worksheets && Array.isArray(updates.worksheets)) {
+      course.worksheets = updates.worksheets.map((worksheet) => ({
+        title: worksheet.title,
+        link: worksheet.link,
+      }));
+    }
+
+    if (updates.keyNotes && Array.isArray(updates.keyNotes)) {
+      course.keyNotes = updates.keyNotes.map((note) => ({
+        title: note.title,
+        content: note.content,
+      }));
     }
 
     const updatedCourse = await courseRepository.update(id, course);
@@ -116,7 +138,7 @@ async function updateCourse(id, updates) {
     console.log(error);
     if (error instanceof AppError) throw error;
     throw new AppError(
-      'Cannot update a new Course object',
+      'Cannot update the Course object',
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
