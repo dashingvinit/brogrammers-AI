@@ -85,6 +85,34 @@ async function updateStory(req, res) {
   }
 }
 
+async function updateLikes(req, res) {
+  try {
+    const { userId, blogId } = req.params;
+    const story = await PlacementService.getStoryById(blogId);
+
+    const alreadyLiked = story.likes.some(
+      (like) => like.userId.toString() === userId
+    );
+
+    if (!alreadyLiked) {
+      story.likes.push({ userId });
+    } else if (alreadyLiked) {
+      story.likes = story.likes.filter(
+        (like) => like.userId.toString() !== userId
+      );
+    }
+
+    const updatedStory = await PlacementService.updateStory(blogId, {
+      likes: story.likes,
+    });
+    successResponse.data = updatedStory;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.INTERNAL_SERVER_ERROR).json(errorResponse);
+  }
+}
+
 async function deleteStory(req, res) {
   try {
     const deletedStory = await PlacementService.deleteStory(req.params.id);
@@ -103,6 +131,7 @@ module.exports = {
   getContinue,
   getBookmarked,
   updateStory,
+  updateLikes,
   createStory,
   deleteStory,
 };

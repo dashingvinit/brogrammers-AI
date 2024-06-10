@@ -99,6 +99,7 @@ async function deleteStory(id) {
 async function updateStory(id, data) {
   try {
     const res = await placementRepository.update(id, data);
+    return res;
   } catch (error) {
     if (error instanceof AppError) throw error;
     throw new AppError(

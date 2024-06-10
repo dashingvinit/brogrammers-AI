@@ -17,75 +17,41 @@ const topicRepository = new TopicRepository();
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 
 async function getKeyNotes(title, units) {
+  const keyPrompt = `Generate a comprehensive set of keynotes on the topic "${title}", using references from the subtopics containing the following sections:
+- Important definations & formulas(if applicable)
+- Essential concepts
+- Important topics to keep in mind
+- Important questions(VIVA)
+- Critical dates and events (if applicable)
+- Notable figures and their contributions (if applicable)
+ The markdown content should be properly formated so that its readable. Dont put JSON inside content feild. Keep it consise, but enough. The keynotes should serve as glossary, review notes, cramified notes. Format the response in JSON as follows:
+{"keyNotes": [{"title": "title 1","content": "content"},{"title": "title 2","content": "content"}...]}`;
+  // ${units}
   try {
-    const prompt = `Generate a comprehensive set of keynotes on the topic "${title}", using references from the provided subtopics ${units}. The keynotes should serve as a glossary and review notes, containing the following:
-    - Important formulas
-    - Key definitions
-    - Critical dates and events
-    - Essential concepts
-    - Notable figures and their contributions (if applicable)
-    
-    Format the response in JSON as follows:
-    {
-      "keyNotes": [
-        {
-          "title": "String",
-          "content": "String"
-        },
-        ...
-      ]
-    }`;
-
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    let keyNotes = await response.text();
-
-    keyNotes = keyNotes.trim().replace(/^```json\n|```$/g, '');
+    const result = await model.generateContent(keyPrompt);
+    const response = await result.response.text();
+    let keyNotes = response.trim().replace(/^```json\n|```$/g, '');
     keyNotes = JSON.parse(keyNotes);
-
-    return keyNotes;
+    return keyNotes.keyNotes;
   } catch (error) {
-    if (error.response) {
-      console.error('genAI error response:', error.response.data);
-    } else {
-      console.error('An error occurred:', error.message);
-    }
-    throw new AppError(
-      'Something went wrong while generating keynotes. Please try again later.',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    console.log('keynotes error', error);
   }
 }
 
-async function getRoadMap(title, syllabus, userId, time) {
+async function getRoadMap(title, time) {
+  const roadMapPrompt = `give a content table on the topic ${title} which includes these subtopics and covers all the topics that can be completed in total ${time} and give each topic's time based roadmap. The roadmap should be structured and the output should be in JSON format like this, here is the example '{"units": [{"title": "Unit 1","time": "6 hours","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "5 hours","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' just return JSON dont give additional texts or explanations`;
   try {
-    const prompt = `Give a content table on the topic ${title} which includes these subtopics ${syllabus} and covers all the topics that can be completed in total ${time} hours. Provide each topic's time-based roadmap. The roadmap should be structured and the output should be in JSON format like this example: '{"units": [{"title": "Unit 1","time": "6 hours","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "5 hours","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' Only return JSON, do not give additional texts or explanations.`;
-
-    // Generate content using the prompt
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent(roadMapPrompt);
     const response = await result.response;
     let units = await response.text();
-
     units = units.trim().replace(/^```json\n|```$/g, '');
-    const keyNotesResponse = await getKeyNotes(title, units.units);
     units = JSON.parse(units);
 
-    const keyNotes = keyNotesResponse.keyNotes;
-
-    const course = await courseRepository.create({
-      userId: userId,
-      title: title,
-      units: units.units,
-      keyNotes: keyNotes,
-    });
-
-    return course;
+    return units.units;
   } catch (error) {
     if (error.response) {
-      // Handle errors returned by genAI
       console.error('genAI error response:', error.response.data);
     } else {
-      // Handle other errors
       console.error('An error occurred:', error.message);
     }
     throw new AppError(
@@ -116,13 +82,14 @@ async function getTopic(id, subject, title, time) {
     });
     return topic;
   } catch (error) {
+    if (error instanceof AppError) throw error;
     if (error.response) {
       console.error('genAI error response:', error.response);
     } else {
       console.error('An error occurred:', error.message);
     }
     throw new AppError(
-      'Something went wrong while generating the topic content. Please try again later.',
+      'Cannot create a new Course object',
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
@@ -136,14 +103,16 @@ async function getSummary(title) {
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let data = await response.text();
+    return data;
   } catch (error) {
+    if (error instanceof AppError) throw error;
     if (error.response) {
       console.error('genAI error response:', error.response);
     } else {
       console.error('An error occurred:', error.message);
     }
     throw new AppError(
-      'Something went wrong while generating the topic content. Please try again later.',
+      'Cannot create a new Course object',
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
@@ -173,6 +142,7 @@ async function getImproved(object) {
 }
 
 module.exports = {
+  getKeyNotes,
   getRoadMap,
   getTopic,
   getSummary,

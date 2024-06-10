@@ -60,25 +60,29 @@ async function getRecent(req, res) {
 
 async function createCourse(req, res) {
   try {
-    await new Promise((resolve) => {
-      if (req.readableEnded) resolve();
-      else req.on('end', resolve);
+    let { userId, title, units, time } = req.body;
+
+    if (!units || !units[0]?.name) {
+      units = await OpenAIService.getRoadMap(title, time);
+    }
+    const keyNotes = await OpenAIService.getKeyNotes(title);
+    const data = await CourseService.createCourse({
+      userId,
+      title,
+      units,
+      keyNotes,
     });
-    const { userId, title, units, syllabus } = req.body;
-    let data = null;
-    if (units == null || units == 'undefined' || units[0].name == '')
-      data = await OpenAIService.getRoadMap(title, syllabus, userId);
-    else
-      data = await CourseService.createCourse({
-        userId,
-        title,
-        units,
-      });
+
     successResponse.data = data;
-    return res.status(StatusCodes.CREATED).json(successResponse);
+    return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
-    errorResponse.error = error;
-    return res.status(error.statusCode).json(errorResponse);
+    console.error('Error creating course:', error);
+    return res
+      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({
+        success: false,
+        error: error.message,
+      });
   }
 }
 

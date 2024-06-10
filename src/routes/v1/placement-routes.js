@@ -13,6 +13,7 @@ router.get('/:id', PlacementController.getStoryById);
 router.post('/', PlacementController.createStory);
 
 router.patch('/:id', PlacementController.updateStory);
+router.patch('/:userId/:blogId', PlacementController.updateLikes);
 
 router.delete('/:id', PlacementController.deleteStory);
 

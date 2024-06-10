@@ -83,6 +83,7 @@ async function createCourse(data) {
       title: data.title,
       userId: data.userId,
       units: data.units,
+      keyNotes: data.keyNotes,
     });
     return course;
   } catch (error) {

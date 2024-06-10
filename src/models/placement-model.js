@@ -44,7 +44,7 @@ const placementStorySchema = new Schema({
   linkedIn: { type: String },
   site: { type: String },
   markdown: { type: Schema.Types.Mixed },
-  likes: { userId: { type: String, ref: 'User' } },
+  likes: [{ userId: { type: String, ref: 'User' } }],
   submissionDate: { type: Date, default: Date.now },
   createdAt: { type: Date, required: true, index: true },
 });
