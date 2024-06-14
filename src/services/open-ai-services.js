@@ -21,7 +21,7 @@ async function getKeyNotes(title, units) {
 - Important definations & formulas(if applicable)
 - Essential concepts
 - Important topics to keep in mind
-- Important questions(VIVA)
+- Important questions
 - Critical dates and events (if applicable)
 - Notable figures and their contributions (if applicable)
  The markdown content should be properly formated so that its readable. Dont put JSON inside content feild. Keep it consise, but enough. The keynotes should serve as glossary, review notes, cramified notes. Format the response in JSON as follows:
@@ -39,7 +39,8 @@ async function getKeyNotes(title, units) {
 }
 
 async function getRoadMap(title, time) {
-  const roadMapPrompt = `give a content table on the topic ${title} which includes these subtopics and covers all the topics that can be completed in total ${time} and give each topic's time based roadmap. The roadmap should be structured and the output should be in JSON format like this, here is the example '{"units": [{"title": "Unit 1","time": "6 hours","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "5 hours","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' just return JSON dont give additional texts or explanations`;
+  const roadMapPrompt = `give a content table on the topic "${title}" which includes subtopics and covers all the topics that can be completed in total "${time}" and give each topic's time based roadmap. The roadmap should be structured and the output should be in JSON format like this, also number each title. Here is the example: '{"units": [{"title": "Unit 1","time": "6 hours","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "5 hours","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' just return JSON dont give additional texts or explanations`;
+
   try {
     const result = await model.generateContent(roadMapPrompt);
     const response = await result.response;

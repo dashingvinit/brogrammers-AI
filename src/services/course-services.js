@@ -2,6 +2,7 @@ const {
   CourseRepository,
   UserRepository,
   TopicRepository,
+  CollectionRepository,
 } = require('../repositories');
 const AppError = require('../utils/errors/app-error');
 const { StatusCodes } = require('http-status-codes');
@@ -9,6 +10,7 @@ const { StatusCodes } = require('http-status-codes');
 const courseRepository = new CourseRepository();
 const userRepository = new UserRepository();
 const topicRepository = new TopicRepository();
+const collectionRepository = new CollectionRepository();
 
 async function getCourses() {
   try {
@@ -145,14 +147,15 @@ async function updateCourse(id, updates) {
   }
 }
 
-async function deleteCourse(userdId, id) {
+async function deleteCourse(id) {
   try {
+    const collection = await collectionRepository.removeCourse(id);
     const topics = await topicRepository.destroyAll(id);
-    const recents = await userRepository.removeRecentlyViewed(userdId, id);
+    const recents = await userRepository.removeRecentlyViewed(id);
     const course = await courseRepository.destroy(id);
     if (!course) {
       throw new AppError(
-        'no user exist for the given userId',
+        'no course exist for the given Id',
         StatusCodes.BAD_REQUEST
       );
     }

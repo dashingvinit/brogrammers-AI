@@ -33,9 +33,9 @@ class UserRepository extends CrudRepository {
     return populated;
   }
 
-  async removeRecentlyViewed(userId, courseId) {
-    const result = await User.updateOne(
-      { _id: userId },
+  async removeRecentlyViewed(courseId) {
+    const result = await User.updateMany(
+      {},
       { $pull: { recentlyViewed: { course: courseId } } }
     );
     return result;

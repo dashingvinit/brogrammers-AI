@@ -16,7 +16,7 @@ async function getCourses(req, res) {
 
 async function getCoursesById(req, res) {
   try {
-    const courses = await CourseService.getCourses(req.params.id);
+    const courses = await CourseService.getCoursesById(req.params.id);
     successResponse.data = courses;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
@@ -101,10 +101,7 @@ async function updateCourse(req, res) {
 
 async function deleteCourse(req, res) {
   try {
-    const course = await CourseService.deleteCourse(
-      req.params.userId,
-      req.params.id
-    );
+    const course = await CourseService.deleteCourse(req.params.id);
     successResponse.data = course;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
