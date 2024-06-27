@@ -5,4 +5,5 @@ module.exports = {
   TopicService: require('./topic-services'),
   PlacementService: require('./placement-services'),
   CollectionService: require('./collection-services'),
+  CommentService: require('./comment-services.js'),
 };

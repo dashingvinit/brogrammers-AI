@@ -61,7 +61,7 @@ async function createStory(req, res) {
   try {
     const data = req.body;
     const improved = await OpenAIService.getImproved(data);
-    const blog = { ...data, markdown: improved };
+    const blog = { ...data, markdown: improved, userId: req.params.id };
     const newStory = await PlacementService.createStory(blog);
     successResponse.data = newStory;
     return res.status(StatusCodes.OK).json(successResponse);

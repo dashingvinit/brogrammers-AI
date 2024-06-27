@@ -4,4 +4,5 @@ module.exports = {
   TopicRepository: require('./topic-repository'),
   PlacementRepository: require('./placement-repository'),
   CollectionRepository: require('./collection-repository'),
+  CommentRepository: require('./comment-repository'),
 };

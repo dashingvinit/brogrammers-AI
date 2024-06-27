@@ -45,6 +45,7 @@ const placementStorySchema = new Schema({
   site: { type: String },
   markdown: { type: Schema.Types.Mixed },
   likes: [{ userId: { type: String, ref: 'User' } }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   submissionDate: { type: Date, default: Date.now },
   createdAt: { type: Date, required: true, index: true },
 });

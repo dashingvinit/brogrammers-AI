@@ -1,20 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const commentsSchema = new Schema({
-  blogId: { type: mongoose.Schema.Types.ObjectId, ref: 'PlacementStory' },
+const commentSchema = new Schema({
   author: { type: String, ref: 'User' },
   comment: { type: String, required: true },
-  createdDate: Date,
-  likes: Number,
+  createdDate: { type: Date, default: Date.now },
+  likes: { type: String, ref: 'User' },
   replies: [
     {
-      user: { type: String, ref: 'User' },
-      content: String,
-      createdDate: Date,
-      likes: Number,
+      author: { type: String, ref: 'User' },
+      comment: String,
+      createdDate: { type: Date, default: Date.now },
+      likes: { type: String, ref: 'User' },
     },
   ],
 });
 
-module.exports = mongoose.model('Comments', commentsSchema);
+module.exports = mongoose.model('Comment', commentSchema);

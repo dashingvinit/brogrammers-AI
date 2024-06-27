@@ -12,6 +12,29 @@ class PlacementRepository extends CrudRepository {
       .limit(12);
     return latestBlogs;
   }
+
+  async getById(id) {
+    const data = await PlacementStory.findOne({ _id: id })
+      .populate({
+        path: 'comments',
+        populate: [
+          {
+            path: 'author',
+            select: 'name imageUrl',
+          },
+          {
+            path: 'replies.author',
+            select: 'name imageUrl',
+          },
+        ],
+      })
+      .populate({
+        path: 'userId',
+        select: 'name imageUrl',
+      });
+
+    return data;
+  }
 }
 
 module.exports = PlacementRepository;

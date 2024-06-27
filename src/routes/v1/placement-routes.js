@@ -10,7 +10,7 @@ router.get('/continue/:id', PlacementController.getContinue);
 router.get('/bookmarked/:id', PlacementController.getBookmarked);
 router.get('/:id', PlacementController.getStoryById);
 
-router.post('/', PlacementController.createStory);
+router.post('/:id', PlacementController.createStory);
 
 router.patch('/:id', PlacementController.updateStory);
 router.patch('/:userId/:blogId', PlacementController.updateLikes);

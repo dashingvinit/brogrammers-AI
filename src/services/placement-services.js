@@ -20,7 +20,7 @@ async function getAllStories() {
 
 async function getStoryById(id) {
   try {
-    const story = await placementRepository.get(id);
+    const story = await placementRepository.getById(id);
     return story;
   } catch (error) {
     if (error instanceof AppError) throw error;

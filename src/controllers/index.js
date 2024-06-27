@@ -4,4 +4,5 @@ module.exports = {
   TopicController: require('./topic-controller'),
   PlacementController: require('./placement-controller'),
   CollectionController: require('./collection-controller'),
+  CommentController: require('./comment-controller'),
 };

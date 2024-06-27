@@ -10,7 +10,6 @@ const {
 const { CourseRepository, TopicRepository } = require('../repositories');
 const { scrapeGoogleSearch } = require('./scrap-services');
 
-const courseRepository = new CourseRepository();
 const topicRepository = new TopicRepository();
 
 // The Gemini 1.5 models are versatile and work with most use cases

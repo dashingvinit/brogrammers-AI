@@ -21,7 +21,9 @@ const courseSchema = new Schema({
   syllabus: { type: String },
   resources: [{ type: String }],
   handwrittenNotes: { type: String },
-  lastViewed: { type: Date },
+  discussion: [
+    { commentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment' } },
+  ],
 });
 
 module.exports = mongoose.model('Course', courseSchema);
