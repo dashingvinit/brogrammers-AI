@@ -12,8 +12,17 @@ const courseRepository = new CourseRepository();
 
 async function getById(id) {
   try {
-    const comments = await placementRepository.getById(id);
-    return comments.comments;
+    const placementStory = await placementRepository.getById(id);
+    const commentIds = placementStory.comments;
+    const populatedComments = [];
+
+    for (const commentId of commentIds) {
+      const comment = await commentRepository.getByIdAndPopulate(commentId);
+      populatedComments.push(comment);
+    }
+
+    populatedComments.reverse();
+    return populatedComments;
   } catch (error) {
     if (error instanceof AppError) throw error;
     throw new AppError(
@@ -58,6 +67,7 @@ async function createDiscussion(id, data) {
 async function addReply(id, data) {
   try {
     const comment = await commentRepository.get(id);
+    if (!comment) return;
     comment.replies.push(data);
     const update = await commentRepository.update(id, comment);
     return update;
@@ -67,24 +77,76 @@ async function addReply(id, data) {
   }
 }
 
-async function deleteComment(blogId, commentId) {
+async function likeComment(commentId, userId) {
   try {
-    const course = await placementRepository.get(blogId);
-    course.comments.filter((comment) => comment._id != commentId);
-    await placementRepository.update(course);
-    const comment = await commentRepository.destroy(commentId);
+    const comment = await commentRepository.get(commentId);
+    const alreadyLiked = comment.likes.some(
+      (like) => like.toString() === userId
+    );
 
-    if (!comment) {
-      throw new AppError(
-        'no comment exist for the given commentId',
-        StatusCodes.BAD_REQUEST
+    if (!alreadyLiked) {
+      comment.likes.push(userId);
+    } else {
+      comment.likes = comment.likes.filter(
+        (like) => like.toString() !== userId
       );
     }
-    return comment;
+    const update = await commentRepository.update(commentId, comment);
+    return update;
   } catch (error) {
     if (error instanceof AppError) throw error;
     throw new AppError(
-      'Cannot find comments',
+      'Cannot update comment likes',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function likeReply(commentId, replyId, userId) {
+  try {
+    const comment = await commentRepository.get(commentId);
+    const reply = comment.replies.id(replyId);
+
+    if (!reply) throw new AppError('Reply not found', StatusCodes.NOT_FOUND);
+
+    const alreadyLiked = reply.likes.some((like) => like.toString() === userId);
+
+    if (!alreadyLiked) {
+      reply.likes.push(userId);
+    } else {
+      reply.likes = reply.likes.filter((like) => like.toString() !== userId);
+    }
+    const update = await commentRepository.update(commentId, comment);
+    return update;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError(
+      'Cannot update reply likes',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function deleteComment(blogId, commentId) {
+  try {
+    const blog = await placementRepository.get(blogId);
+    const updatedComments = blog.comments.filter(
+      (comment) => comment._id.toString() !== commentId.toString()
+    );
+    blog.comments = updatedComments;
+    const deletedComment = await commentRepository.destroy(commentId);
+    if (!deletedComment) {
+      throw new AppError(
+        'Failed to delete the comment',
+        StatusCodes.INTERNAL_SERVER_ERROR
+      );
+    }
+    await placementRepository.update(blog._id, blog);
+    return deletedComment;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError(
+      'Cannot delete comment',
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
@@ -95,5 +157,7 @@ module.exports = {
   createComment,
   createDiscussion,
   addReply,
+  likeComment,
+  likeReply,
   deleteComment,
 };

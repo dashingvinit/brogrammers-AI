@@ -14,25 +14,7 @@ class PlacementRepository extends CrudRepository {
   }
 
   async getById(id) {
-    const data = await PlacementStory.findOne({ _id: id })
-      .populate({
-        path: 'comments',
-        populate: [
-          {
-            path: 'author',
-            select: 'name imageUrl',
-          },
-          {
-            path: 'replies.author',
-            select: 'name imageUrl',
-          },
-        ],
-      })
-      .populate({
-        path: 'userId',
-        select: 'name imageUrl',
-      });
-
+    const data = await PlacementStory.findOne({ _id: id });
     return data;
   }
 }

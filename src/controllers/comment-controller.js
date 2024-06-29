@@ -20,7 +20,7 @@ async function createComment(req, res) {
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
     errorResponse.error = error;
-    return res.status(error.INTERNAL_SERVER_ERROR).json(errorResponse);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(errorResponse);
   }
 }
 
@@ -31,7 +31,7 @@ async function createDiscussion(req, res) {
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
     errorResponse.error = error;
-    return res.status(error.INTERNAL_SERVER_ERROR).json(errorResponse);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(errorResponse);
   }
 }
 
@@ -42,7 +42,36 @@ async function addReply(req, res) {
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
     errorResponse.error = error;
-    return res.status(error.INTERNAL_SERVER_ERROR).json(errorResponse);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(errorResponse);
+  }
+}
+
+async function likeComment(req, res) {
+  try {
+    const data = await CommentService.likeComment(
+      req.params.commentId,
+      req.params.userId
+    );
+    successResponse.data = data;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(errorResponse);
+  }
+}
+
+async function likeReply(req, res) {
+  try {
+    const data = await CommentService.likeReply(
+      req.params.commentId,
+      req.params.replyId,
+      req.params.userId
+    );
+    successResponse.data = data;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(errorResponse);
   }
 }
 
@@ -56,7 +85,7 @@ async function deleteComment(req, res) {
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
     errorResponse.error = error;
-    return res.status(error.INTERNAL_SERVER_ERROR).json(errorResponse);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(errorResponse);
   }
 }
 
@@ -65,5 +94,7 @@ module.exports = {
   createComment,
   createDiscussion,
   addReply,
+  likeComment,
+  likeReply,
   deleteComment,
 };
