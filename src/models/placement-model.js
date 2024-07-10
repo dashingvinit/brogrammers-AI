@@ -2,29 +2,18 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const placementStorySchema = new Schema({
-  userId: { type: String, ref: 'User' },
+  userId: { type: String, ref: 'User', required: true },
   studentName: { type: String, required: true },
   academicBackground: { type: String, required: true },
+  cgpa: { type: String },
   jobRole: { type: String, required: true },
   companyName: { type: String, required: true },
+  package: { type: String },
+  title: { type: String, required: true },
   interviewProcess: [
     {
-      stage: {
-        type: String,
-        required: true,
-      },
-      questions: [
-        {
-          question: {
-            type: String,
-            required: true,
-          },
-          answer: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
+      stage: { type: String },
+      description: { type: String },
       notes: String,
     },
   ],
@@ -32,10 +21,7 @@ const placementStorySchema = new Schema({
   personalExperience: { type: String, required: true },
   resourcesUsed: [
     {
-      resourceName: {
-        type: String,
-        required: true,
-      },
+      resourceName: { type: String },
       resourceLink: String,
     },
   ],

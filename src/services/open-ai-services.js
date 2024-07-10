@@ -15,7 +15,7 @@ const topicRepository = new TopicRepository();
 // The Gemini 1.5 models are versatile and work with most use cases
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 
-async function getKeyNotes(title, units) {
+async function getKeyNotes(title) {
   const keyPrompt = `Generate a comprehensive set of keynotes on the topic "${title}", using references from the subtopics containing the following sections:
 - Important definations & formulas(if applicable)
 - Essential concepts
@@ -25,7 +25,7 @@ async function getKeyNotes(title, units) {
 - Notable figures and their contributions (if applicable)
  The markdown content should be properly formated so that its readable. Dont put JSON inside content feild. Keep it consise, but enough. The keynotes should serve as glossary, review notes, cramified notes. Format the response in JSON as follows:
 {"keyNotes": [{"title": "title 1","content": "content"},{"title": "title 2","content": "content"}...]}`;
-  // ${units}
+
   try {
     const result = await model.generateContent(keyPrompt);
     const response = await result.response.text();
@@ -122,7 +122,7 @@ async function getImproved(object) {
   try {
     const prompt = `Here is a blog model with data provided by the user: ${JSON.stringify(
       object
-    )}. Can you improve the content of the entire blog without adding anything fake, just improve the language and sentence formation to make it more readable and engaging? Return in nicely formated markdown language`;
+    )}. Can you improve the content of the entire blog without fabricating new details, just join all the data fields and maybe write full forms if something is written in short form to make it more readable.Do very minor changes in the text just to make it readable. Blog might contain hindi words dont try to change them. Return in nicely formated markdown language`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;

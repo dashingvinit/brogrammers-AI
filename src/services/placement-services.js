@@ -7,7 +7,7 @@ const userRepository = new UserRepository();
 
 async function getAllStories() {
   try {
-    const stories = await placementRepository.getAll();
+    const stories = await placementRepository.getAllStories();
     return stories;
   } catch (error) {
     if (error instanceof AppError) throw error;
