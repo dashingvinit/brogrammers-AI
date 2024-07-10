@@ -8,7 +8,7 @@ const placementStorySchema = new Schema({
   cgpa: { type: String },
   jobRole: { type: String, required: true },
   companyName: { type: String, required: true },
-  package: { type: String },
+  package: { type: Number },
   title: { type: String, required: true },
   interviewProcess: [
     {
