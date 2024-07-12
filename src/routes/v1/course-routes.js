@@ -12,14 +12,14 @@ router.get('/recent/:id', CourseController.getRecent);
 
 router.post('/new', CourseController.createCourse);
 router.patch('/:id', CourseController.updateCourse);
-
+router.patch('/obj/:id', CourseController.updateCourseObject);
 router.delete('/:userId/:id', CourseController.deleteCourse);
 
 // Topic Routes
 router.get('/topic/:courseId/:subject/:title', TopicController.getTopic);
+// router.patch('/topic/:courseId/:unitId', TopicController.patchUnit);
+
 // router.get('/courses/:courseId/units/:id', CourseController.getUnit);
-// router.post('/courses/:courseId/units', CourseController.createUnit);
 // router.put('/courses/:courseId/units/:id', CourseController.updateUnit);
-// router.delete('/courses/:courseId/units/:id', CourseController.deleteUnit);
 
 module.exports = router;

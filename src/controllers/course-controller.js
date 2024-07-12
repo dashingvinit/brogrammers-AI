@@ -90,7 +90,21 @@ async function updateCourse(req, res) {
   try {
     const courseId = req.params.id;
     const updates = req.body;
+    console.log(updates);
     const course = await CourseService.updateCourse(courseId, updates);
+    successResponse.data = course;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
+  }
+}
+
+async function updateCourseObject(req, res) {
+  try {
+    const courseId = req.params.id;
+    const updates = req.body;
+    const course = await CourseService.updateCourseObject(courseId, updates);
     successResponse.data = course;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
@@ -120,6 +134,7 @@ module.exports = {
 
   createCourse,
   updateCourse,
+  updateCourseObject,
 
   deleteCourse,
 };

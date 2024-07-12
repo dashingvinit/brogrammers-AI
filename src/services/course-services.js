@@ -167,6 +167,18 @@ async function deleteCourse(id) {
   }
 }
 
+async function updateCourseObject(id, course) {
+  try {
+    const updatedCourse = await courseRepository.update(id, course);
+    return updatedCourse;
+  } catch (error) {
+    throw new AppError(
+      'Cannot update the course',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   getCourses,
   getCoursesById,
@@ -177,4 +189,5 @@ module.exports = {
   createCourse,
   updateCourse,
   deleteCourse,
+  updateCourseObject,
 };

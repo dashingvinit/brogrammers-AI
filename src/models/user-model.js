@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user',
     },
+    premium: {
+      validity: { type: Date },
+    },
+    trial: {
+      isActive: { type: Boolean, default: false },
+      startDate: { type: Date },
+      endDate: { type: Date },
+    },
     recentlyViewed: [
       {
         course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
@@ -57,6 +65,11 @@ userSchema.pre('save', async function (next) {
   } catch (err) {
     next(err);
   }
+});
+
+// Add a virtual field for premium validity check
+userSchema.virtual('premium.isValid').get(function () {
+  return this.premium.validity ? this.premium.validity > new Date() : false;
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -31,7 +31,7 @@ async function webhooks(req, res) {
       });
     }
     if (eventType === 'user.deleted') {
-      const user = await UserService.deleteUser(_id);
+      user = await UserService.deleteUser(_id);
     }
     successResponse.data = user;
     return res.status(StatusCodes.CREATED).json(successResponse);
@@ -39,6 +39,18 @@ async function webhooks(req, res) {
     console.log(error);
     errorResponse.error = error;
     return res.status(error.statusCode || 500).json(errorResponse);
+  }
+}
+
+async function getUser(req, res) {
+  const userId = req.body.userId;
+  try {
+    const user = await UserService.wa;
+    successResponse.data = user;
+    return res.status(StatusCodes.CREATED).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
   }
 }
 

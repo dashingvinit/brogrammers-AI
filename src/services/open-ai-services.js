@@ -23,7 +23,7 @@ async function getKeyNotes(title) {
 - Important questions
 - Critical dates and events (if applicable)
 - Notable figures and their contributions (if applicable)
- The markdown content should be properly formated so that its readable. Dont put JSON inside content feild. Keep it consise, but enough. The keynotes should serve as glossary, review notes, cramified notes. Format the response in JSON as follows:
+ The markdown content should be properly formated so that its readable. Dont put JSON inside content feild. The keynotes should serve as glossary, review notes, cramified notes. Format the response in JSON as follows:
 {"keyNotes": [{"title": "title 1","content": "content"},{"title": "title 2","content": "content"}...]}`;
 
   try {
