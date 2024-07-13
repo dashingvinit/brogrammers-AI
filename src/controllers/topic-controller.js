@@ -35,16 +35,31 @@ async function getTopic(req, res) {
   }
 }
 
-async function updateTopic(req, res) {
-  // Implement updateUnit functionality
+async function deleteTopic(req, res) {
+  try {
+    const topic = await TopicService.getTopic(
+      req.params.courseId,
+      req.params.title
+    );
+    if (!topic) {
+      throw new Error('Cannot find topic');
+    }
+    const deletedTopic = await TopicService.deleteTopic(topic._id);
+    successResponse.data = deletedTopic;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 'An error occurred while deleting the topic',
+    });
+  }
 }
 
-async function deleteTopic(req, res) {
-  // Implement deleteUnit functionality
+async function updateTopic(req, res) {
+  // Implement updateUnit functionality
 }
 
 module.exports = {
   getTopic,
   //   updateTopic,
-  //   deleteTopic,
+  deleteTopic,
 };

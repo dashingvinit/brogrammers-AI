@@ -14,4 +14,14 @@ async function getTopic(id, title) {
   }
 }
 
-module.exports = { getTopic };
+async function deleteTopic(id) {
+  try {
+    const courses = await topicRepository.destroy(id);
+    return courses;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError('Cannot find topic', StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
+module.exports = { getTopic, deleteTopic };

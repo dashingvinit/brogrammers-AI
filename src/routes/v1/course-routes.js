@@ -17,7 +17,7 @@ router.delete('/:userId/:id', CourseController.deleteCourse);
 
 // Topic Routes
 router.get('/topic/:courseId/:subject/:title', TopicController.getTopic);
-// router.patch('/topic/:courseId/:unitId', TopicController.patchUnit);
+router.delete('/topic/:courseId/:title', TopicController.deleteTopic);
 
 // router.get('/courses/:courseId/units/:id', CourseController.getUnit);
 // router.put('/courses/:courseId/units/:id', CourseController.updateUnit);
