@@ -63,7 +63,7 @@ async function getRoadMap(title, time) {
 
 async function getTopic(id, subject, title, time) {
   try {
-    const prompt = `Elaborate the ${title} which is a subtopic of ${subject} and provide suitable explanations and examples, such as code snippets, bullet points, graphs, illustrations, or anything that react-markdown supports.Keep the content concise and readable. The explanation should be completed. Use img and videos if possible in markdown.
+    const prompt = `Elaborate the ${title} which is a subtopic of ${subject} and provide suitable explanations and examples, such as code snippets, bullet points, graphs, illustrations, or anything that react-markdown supports.Keep the content concise and readable. The explanation should be completed. Use img and videos if possible in markdown. For images you can get from www.tutorialspoint.com.
     Return the data in properly formatted markdown language, ensuring it supports react-markdown. Make sure to include proper headings, subheadings, for improved readability and tables should be properly formatted for react-markdown.`;
 
     const result = await model.generateContent(prompt);

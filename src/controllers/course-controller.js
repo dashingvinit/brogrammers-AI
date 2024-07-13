@@ -61,8 +61,7 @@ async function getRecent(req, res) {
 async function createCourse(req, res) {
   try {
     let { userId, title, units, time } = req.body;
-
-    if (!units || !units[0]?.name) {
+    if (!units || !units[0]?.title) {
       units = await OpenAIService.getRoadMap(title, time);
     }
     const keyNotes = await OpenAIService.getKeyNotes(title);
