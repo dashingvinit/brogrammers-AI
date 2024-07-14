@@ -6,4 +6,5 @@ module.exports = {
   CollectionController: require('./collection-controller'),
   CommentController: require('./comment-controller'),
   DSAProgressController: require('./dsa-progress-controller'),
+  PaymentController: require('./payment-controller'),
 };

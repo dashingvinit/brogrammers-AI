@@ -9,4 +9,6 @@ module.exports = {
   JWT_SECRET: process.env.JWT_SECRET,
   GEMINI_KEY: process.env.GEMINI_KEY,
   CLERK_KEY: process.env.CLERK_KEY,
+  R_KEY_ID: process.env.KEY_ID,
+  R_KEY_SECRET: process.env.KEY_SECRET,
 };
