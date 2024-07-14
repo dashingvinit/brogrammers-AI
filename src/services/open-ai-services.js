@@ -63,8 +63,23 @@ async function getRoadMap(title, time) {
 
 async function getTopic(id, subject, title, time) {
   try {
-    const prompt = `Elaborate the ${title} which is a subtopic of ${subject} and provide suitable explanations and examples, such as code snippets, bullet points, graphs, illustrations, or anything that react-markdown supports.Keep the content concise and readable. The explanation should be completed. Use images and videos if possible in markdown. Try getting some visual representations. Keep the visual representation at the top. If your provide code snippet and the language is not defined then default langauge is c++.
-    Return the data in properly formatted markdown language, ensuring it supports react-markdown. Make sure to include proper headings, subheadings, for improved readability and tables should be properly formatted for react-markdown.`;
+    const prompt = `Elaborate on the topic of "${title}", a subtopic of "${subject}". Provide clear explanations and relevant examples, such as historical context, real-world applications, code snippets (when applicable in C++), bullet points, tables, diagrams, or any other format supported by react-markdown.
+
+    Focus on creating concise and readable content. 
+
+    Here are some specific data points to consider including:
+
+    * Definition 
+    * Explanation(step by step)
+    * Key characteristics 
+    * Applications
+    * Historical background (if applicable)
+
+
+Use images where appropriate to enhance understanding.
+
+Return the data in properly formatted markdown language, ensuring it supports react-markdown. Make sure to include proper headings and subheadings for improved readability.  
+`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
