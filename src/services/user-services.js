@@ -53,6 +53,18 @@ async function loginUser(data) {
   }
 }
 
+async function getUser(id) {
+  try {
+    const user = await userRepository.get(id);
+    return user;
+  } catch (error) {
+    throw new AppError(
+      'Cannot get data of the user',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 async function deleteUser(id) {
   try {
     const user = await userRepository.destroy(id);
@@ -145,12 +157,56 @@ async function updateBookmarked(userId, blogId) {
   }
 }
 
+async function activatePremium(userId, active, startDate, endDate) {
+  try {
+    if (!startDate || !endDate) {
+      throw new AppError(
+        'Start date and end date are required',
+        StatusCodes.INTERNAL_SERVER_ERROR
+      );
+    }
+    const user = await userRepository.activatePremium(
+      userId,
+      active,
+      startDate,
+      endDate
+    );
+    if (!user) {
+      throw new AppError(
+        'Cannot find a user',
+        StatusCodes.INTERNAL_SERVER_ERROR
+      );
+    }
+    return user;
+  } catch (error) {
+    throw new AppError(
+      'Cannot activate users plan',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function updateTrialStatus(userId) {
+  try {
+    const user = await userRepository.activatePremium(userId);
+    return user;
+  } catch (error) {
+    throw new AppError(
+      'Cannot update trial state',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   createUser,
   loginUser,
+  getUser,
   deleteUser,
   patchUser,
   viewCourse,
   updateContinue,
   updateBookmarked,
+  activatePremium,
+  updateTrialStatus,
 };

@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
     },
+    phone: { type: Number },
     imageUrl: { type: String },
     password: {
       type: String,
@@ -28,12 +29,12 @@ const userSchema = new mongoose.Schema(
       default: 'user',
     },
     premium: {
-      validity: { type: Date },
-    },
-    trial: {
       isActive: { type: Boolean, default: false },
       startDate: { type: Date },
       endDate: { type: Date },
+    },
+    trial: {
+      isActive: { type: Boolean, default: true },
     },
     recentlyViewed: [
       {
@@ -69,7 +70,7 @@ userSchema.pre('save', async function (next) {
 
 // Add a virtual field for premium validity check
 userSchema.virtual('premium.isValid').get(function () {
-  return this.premium.validity ? this.premium.validity > new Date() : false;
+  return this.premium.endDate ? this.premium.endDate > new Date() : false;
 });
 
 module.exports = mongoose.model('User', userSchema);

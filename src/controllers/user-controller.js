@@ -43,9 +43,9 @@ async function webhooks(req, res) {
 }
 
 async function getUser(req, res) {
-  const userId = req.body.userId;
+  const userId = req.params.userId;
   try {
-    const user = await UserService.wa;
+    const user = await UserService.getUser(userId);
     successResponse.data = user;
     return res.status(StatusCodes.CREATED).json(successResponse);
   } catch (error) {
@@ -139,8 +139,26 @@ async function updateBookmarked(req, res) {
   }
 }
 
+async function updateSubscription(req, res) {
+  try {
+    const { userId, active, startDate, endDate } = req.body;
+    const user = await UserService.activatePremium(
+      userId,
+      active,
+      startDate,
+      endDate
+    );
+    successResponse.data = user;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
+  }
+}
+
 module.exports = {
   webhooks,
+  getUser,
   signup,
   login,
   deleteUser,
@@ -148,4 +166,5 @@ module.exports = {
   updateRecent,
   updateContinue,
   updateBookmarked,
+  updateSubscription,
 };

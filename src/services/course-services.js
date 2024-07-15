@@ -87,6 +87,7 @@ async function createCourse(data) {
       units: data.units,
       keyNotes: data.keyNotes,
     });
+    if (course) await userRepository.updateTrialStatus(data.userId);
     return course;
   } catch (error) {
     console.log(error);

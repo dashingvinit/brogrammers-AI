@@ -40,6 +40,22 @@ class UserRepository extends CrudRepository {
     );
     return result;
   }
+
+  async updateTrialStatus(userId) {
+    const result = await User.findByIdAndUpdate(userId, {
+      'trial.isActive': false,
+    });
+    return result;
+  }
+
+  async activatePremium(userId, active, startDate, endDate) {
+    const result = await User.findByIdAndUpdate(userId, {
+      'premium.isActive': active,
+      'premium.startDate': startDate,
+      'premium.endDate': endDate,
+    });
+    return result;
+  }
 }
 
 module.exports = UserRepository;
