@@ -6,7 +6,7 @@ const { UserService } = require('../services');
 
 async function getKey(req, res) {
   try {
-    const data = await serverConfig.R_KEY_ID;
+    const data = serverConfig.R_KEY_ID;
     successResponse.data = data;
     return res.status(StatusCodes.CREATED).json(successResponse);
   } catch (error) {
@@ -58,7 +58,15 @@ async function verify(req, res) {
       const startDate = new Date();
       const endDate = addMonths(startDate, duration);
 
-      await UserService.activatePremium(userId, true, startDate, endDate);
+      await UserService.activatePremium(
+        userId,
+        true,
+        startDate,
+        endDate,
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature
+      );
       res.redirect(
         `https://brogrammers.in/payment?reference=${razorpay_payment_id}`
       );

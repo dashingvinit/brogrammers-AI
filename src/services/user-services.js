@@ -157,7 +157,15 @@ async function updateBookmarked(userId, blogId) {
   }
 }
 
-async function activatePremium(userId, active, startDate, endDate) {
+async function activatePremium(
+  userId,
+  active,
+  startDate,
+  endDate,
+  razorpayOrderId,
+  razorpayPaymentId,
+  razorpaySignature
+) {
   try {
     if (!startDate || !endDate) {
       throw new AppError(
@@ -169,7 +177,10 @@ async function activatePremium(userId, active, startDate, endDate) {
       userId,
       active,
       startDate,
-      endDate
+      endDate,
+      razorpayOrderId,
+      razorpayPaymentId,
+      razorpaySignature
     );
     if (!user) {
       throw new AppError(

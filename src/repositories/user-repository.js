@@ -48,12 +48,30 @@ class UserRepository extends CrudRepository {
     return result;
   }
 
-  async activatePremium(userId, active, startDate, endDate) {
-    const result = await User.findByIdAndUpdate(userId, {
+  async activatePremium(
+    userId,
+    active,
+    startDate,
+    endDate,
+    razorpayOrderId,
+    razorpayPaymentId,
+    razorpaySignature
+  ) {
+    // Construct the update object
+    const updateFields = {
       'premium.isActive': active,
       'premium.startDate': startDate,
       'premium.endDate': endDate,
-    });
+    };
+
+    // Conditionally add payment details if they are provided
+    if (razorpayOrderId && razorpayPaymentId && razorpaySignature) {
+      updateFields['paymentDetails.razorpay_order_id'] = razorpayOrderId;
+      updateFields['paymentDetails.razorpay_payment_id'] = razorpayPaymentId;
+      updateFields['paymentDetails.razorpay_signature'] = razorpaySignature;
+    }
+
+    const result = await User.findByIdAndUpdate(userId, updateFields);
     return result;
   }
 }

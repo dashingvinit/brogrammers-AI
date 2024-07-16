@@ -33,9 +33,15 @@ const userSchema = new mongoose.Schema(
       startDate: { type: Date },
       endDate: { type: Date },
     },
+    paymentDetails: {
+      razorpay_order_id: { type: String },
+      razorpay_payment_id: { type: String },
+      razorpay_signature: { type: String },
+    },
     trial: {
       isActive: { type: Boolean, default: true },
     },
+
     recentlyViewed: [
       {
         course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
