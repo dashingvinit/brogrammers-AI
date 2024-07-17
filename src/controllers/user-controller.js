@@ -15,6 +15,9 @@ async function webhooks(req, res) {
     const { id, ...attributes } = evt.data;
     const eventType = evt.type;
 
+    console.log(attributes);
+    console.log(eventType);
+
     const _id = id;
     const email = attributes.email_addresses?.[0]?.email_address;
     const name = `${attributes.first_name} ${attributes.last_name}`;
