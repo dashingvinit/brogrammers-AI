@@ -14,6 +14,12 @@ router.post(
 );
 
 router.post(
+  '/webhooks/test',
+  bodyParser.raw({ type: 'application/json' }),
+  UserController.webhooksTest
+);
+
+router.post(
   '/signup',
   AuthMiddlewares.validateAuthRequest,
   UserController.signup
