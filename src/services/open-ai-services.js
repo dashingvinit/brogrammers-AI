@@ -63,23 +63,28 @@ async function getRoadMap(title, time) {
 
 async function getTopic(id, subject, title, time) {
   try {
-    const prompt = `Elaborate on the topic of "${title}", a subtopic of "${subject}". Provide clear explanations and relevant examples, such as historical context, real-world applications, code snippets (when applicable in C++), bullet points, tables, diagrams, or any other format supported by react-markdown.
+    const prompt = `## ${title} A subtopic of ${subject}
+    Content with Flair:
 
-    Focus on creating concise and readable content. 
+    Break the mold: Instead of bullet points everywhere, use a mix of formats like short paragraphs, concise explanations, and even fun facts.
+    Hook 'em early: Start with an interesting anecdote, a thought-provoking question, or a relevant image to grab the reader's attention.
+    Examples are king: Use real-world examples, case studies, or relatable scenarios to illustrate the concept.
+    Visual storytelling:
+    For all subjects: Leverage images, infographics, tables, graphs to visually explain complex points.
+    For specific subjects:
+    CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks).
+    Mathematics: Utilize diagrams, charts, or equations (formatted with LaTeX or Mermaid syntax) to enhance understanding.
+    Sciences: Integrate interactive elements like simulations or visualizations (depending on the platform) to make the learning experience dynamic.
+    Prompt Tweaks:
 
-    Here are some specific data points to consider including:
+    Highlight Visuals: Emphasize the importance of visuals in the prompt itself. You can add a section titled "Visual Aids" that suggests using images, infographics, code snippets, diagrams, or even short videos depending on the topic.
+    Content Variety: Instead of just listing "Explanation" as a section, mention using a mix of formats like short stories, analogies, or thought experiments to explain the concept.
+    Overall Tone:
 
-    * Definition 
-    * Explanation(step by step)
-    * Key characteristics 
-    * Applications
-    * Historical background (if applicable)
-
-
-Use images where appropriate to enhance understanding.
-
-Return the data in properly formatted markdown language, ensuring it supports react-markdown. Make sure to include proper headings and subheadings for improved readability.  
-`;
+    Maintain a conversational style: Imagine explaining the topic to a curious friend.
+    Embrace enthusiasm: Show excitement for the subject and its applications.
+    Tailor the tone: Adjust the formality depending on the target audience (e.g., more playful for kids, more professional for business topics).
+    `;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
