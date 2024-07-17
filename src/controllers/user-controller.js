@@ -9,7 +9,7 @@ async function webhooks(req, res) {
     const payloadString = JSON.stringify(req.body);
     const svixHeaders = req.headers;
 
-    const wh = new Webhook(CLERK_KEY);
+    const wh = new Webhook(CLERK_KEY_PRO);
     const evt = wh.verify(payloadString, svixHeaders);
 
     const { id, ...attributes } = evt.data;
@@ -47,7 +47,7 @@ async function webhooksTest(req, res) {
     const payloadString = JSON.stringify(req.body);
     const svixHeaders = req.headers;
 
-    const wh = new Webhook(CLERK_KEY_PRO);
+    const wh = new Webhook(CLERK_KEY);
     const evt = wh.verify(payloadString, svixHeaders);
 
     const { id, ...attributes } = evt.data;
