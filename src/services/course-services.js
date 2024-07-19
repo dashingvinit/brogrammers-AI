@@ -111,6 +111,9 @@ async function updateCourse(id, updates) {
     if (updates.title) {
       course.title = updates.title;
     }
+    if (updates.keyNotes) {
+      course.keyNotes = updates.keyNotes;
+    }
     if (updates.syllabus) {
       course.syllabus = updates.syllabus;
     }

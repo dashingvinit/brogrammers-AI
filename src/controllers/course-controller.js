@@ -64,12 +64,11 @@ async function createCourse(req, res) {
     if (!units || !units[0]?.title) {
       units = await OpenAIService.getRoadMap(title, time);
     }
-    const keyNotes = await OpenAIService.getKeyNotes(title);
+
     const data = await CourseService.createCourse({
       userId,
       title,
       units,
-      keyNotes,
     });
 
     successResponse.data = data;
@@ -85,11 +84,23 @@ async function createCourse(req, res) {
   }
 }
 
+async function getKeyNote(req, res) {
+  try {
+    let { courseId, title } = req.params;
+    const keyNotes = await OpenAIService.getKeyNotes(title);
+    const course = await CourseService.updateCourse(courseId, { keyNotes });
+    successResponse.data = course;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
+  }
+}
+
 async function updateCourse(req, res) {
   try {
     const courseId = req.params.id;
     const updates = req.body;
-    console.log(updates);
     const course = await CourseService.updateCourse(courseId, updates);
     successResponse.data = course;
     return res.status(StatusCodes.OK).json(successResponse);
@@ -130,6 +141,7 @@ module.exports = {
   getAdminCourses,
   getCourse,
   getRecent,
+  getKeyNote,
 
   createCourse,
   updateCourse,
