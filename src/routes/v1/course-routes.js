@@ -9,11 +9,13 @@ router.get('/all/:id', CourseController.getCoursesById);
 router.get('/admin', CourseController.getAdminCourses);
 router.get('/:id', CourseController.getCourse);
 router.get('/recent/:id', CourseController.getRecent);
-router.get('/keynotes/:courseId/:title', CourseController.getKeyNote);
 
 router.post('/new', CourseController.createCourse);
 router.patch('/:id', CourseController.updateCourse);
+
 router.patch('/obj/:id', CourseController.updateCourseObject);
+router.patch('/keynotes/:courseId/:title', CourseController.getKeyNote);
+
 router.delete('/:userId/:id', CourseController.deleteCourse);
 
 // Topic Routes

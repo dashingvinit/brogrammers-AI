@@ -24,6 +24,7 @@ const courseSchema = new Schema({
   discussion: [
     { commentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment' } },
   ],
+  createdDate: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Course', courseSchema);
