@@ -18,6 +18,7 @@ const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 async function getKeyNotes(title) {
   const keyPrompt = `Generate a comprehensive set of keynotes on the topic "${title}", using references from the subtopics containing the following sections:
 - Important definations & formulas(if applicable)
+- Differences , this vs that (if applicable) 
 - Essential concepts
 - Important topics to keep in mind
 - Important questions
@@ -84,6 +85,8 @@ async function getTopic(id, subject, title, time) {
     Maintain a conversational style: Imagine explaining the topic to a curious friend.
     Embrace enthusiasm: Show excitement for the subject and its applications.
     Tailor the tone: Adjust the formality depending on the target audience (e.g., more playful for kids, more professional for business topics).
+
+    Keep it concise and information filled.
     `;
 
     const result = await model.generateContent(prompt);
