@@ -13,6 +13,7 @@ const ProjectBasketSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   projects: [ProjectSchema],
+  createdAt: { type: Date, required: true, index: true },
 });
 
 const ProjectBasket = mongoose.model('ProjectBasket', ProjectBasketSchema);
