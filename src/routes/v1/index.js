@@ -8,6 +8,7 @@ const collectionRoutes = require('./collection-routes');
 const commentsRoutes = require('./comment-route');
 const dsaRoutes = require('./dsa-route');
 const paymentRoutes = require('./payment-routes');
+const basketRoutes = require('./basket-routes');
 
 router.use('/user', userRoutes);
 router.use('/course', courseRoutes);
@@ -16,5 +17,6 @@ router.use('/collection', collectionRoutes);
 router.use('/comments', commentsRoutes);
 router.use('/dsa', dsaRoutes);
 router.use('/payment', paymentRoutes);
+router.use('/basket', basketRoutes);
 
 module.exports = router;
