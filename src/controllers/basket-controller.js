@@ -13,6 +13,17 @@ async function getBaskets(req, res) {
   }
 }
 
+async function getById(req, res) {
+  try {
+    const data = await BasketServices.getById(req.params.userId);
+    successResponse.data = data;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(errorResponse);
+  }
+}
+
 async function createBasket(req, res) {
   try {
     const data = await BasketServices.createBasket(req.body);
@@ -24,4 +35,4 @@ async function createBasket(req, res) {
   }
 }
 
-module.exports = { getBaskets, createBasket };
+module.exports = { getBaskets, getById, createBasket };

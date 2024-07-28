@@ -7,13 +7,20 @@ const basketRepository = new BasketRepository();
 async function getBaskets() {
   try {
     const baskets = await basketRepository.getAll();
-    return baskets;
+    return baskets.reverse();
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find courses',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find basket', StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
+async function getById(id) {
+  try {
+    const basket = await basketRepository.get(id);
+    return basket;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError('Cannot find basket', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -33,5 +40,6 @@ async function createBasket(data) {
 
 module.exports = {
   getBaskets,
+  getById,
   createBasket,
 };
