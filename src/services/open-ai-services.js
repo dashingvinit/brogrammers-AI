@@ -16,10 +16,10 @@ const topicRepository = new TopicRepository();
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 
 async function getKeyNotes(title) {
-  const keyPrompt = `Generate a comprehensive set of keynotes on the topic "${title}", using references from the subtopics containing the following sections:
-- Important definations & formulas(if applicable)
-- Differences , this vs that (if applicable) 
-- Essential concepts
+  const keyPrompt = `Generate a summary on the topic "${title}", using references from the subtopics containing the following sections:
+- Important definations & formulas
+- Differences , this vs that 
+- Essential concepts (definations)
 - Important topics to keep in mind
 - Important questions
 - Critical dates and events (if applicable)
@@ -70,7 +70,7 @@ async function getTopic(id, subject, title, time) {
     Break the mold: Instead of bullet points everywhere, use a mix of formats like short paragraphs, concise explanations, and even fun facts.
     Hook 'em early: Start with an interesting anecdote, a thought-provoking question, or a relevant image to grab the reader's attention.
     Examples are king: Use real-world examples, case studies, or relatable scenarios to illustrate the concept.
-    Visual storytelling:
+
     For all subjects: Leverage images, infographics, tables, graphs to visually explain complex points.
     For specific subjects:
     CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks).
@@ -78,13 +78,9 @@ async function getTopic(id, subject, title, time) {
     Sciences: Integrate interactive elements like simulations or visualizations (depending on the platform) to make the learning experience dynamic.
     Prompt Tweaks:
 
-    Highlight Visuals: Emphasize the importance of visuals in the prompt itself. You can add a section titled "Visual Aids" that suggests using images, infographics, code snippets, diagrams, or even short videos depending on the topic.
-    Content Variety: Instead of just listing "Explanation" as a section, mention using a mix of formats like short stories, analogies, or thought experiments to explain the concept.
-    Overall Tone:
-
     Maintain a conversational style: Imagine explaining the topic to a curious friend.
     Embrace enthusiasm: Show excitement for the subject and its applications.
-    Tailor the tone: Adjust the formality depending on the target audience (e.g., more playful for kids, more professional for business topics).
+    Tailor the tone: Adjust the formality depending on the target audience (e.g., more playful for kids, more professional for business topics, and a neutral tone for engineering topics).
 
     Keep it concise and information filled.
     `;
