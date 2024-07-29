@@ -3,6 +3,7 @@ module.exports = {
   UserService: require('./user-services'),
   CourseService: require('./course-services'),
   TopicService: require('./topic-services'),
+  QuizService: require('./quiz-services.js'),
   PlacementService: require('./placement-services'),
   CollectionService: require('./collection-services'),
   CommentService: require('./comment-services.js'),

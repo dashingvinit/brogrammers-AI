@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const { CourseController, TopicController } = require('../../controllers');
+const {
+  CourseController,
+  TopicController,
+  QuizController,
+} = require('../../controllers');
 
 // Course Routes
 router.get('/all', CourseController.getCourses);
@@ -21,6 +25,10 @@ router.delete('/:userId/:id', CourseController.deleteCourse);
 // Topic Routes
 router.get('/topic/:courseId/:subject/:title', TopicController.getTopic);
 router.delete('/topic/:courseId/:title', TopicController.deleteTopic);
+
+// Quize Routes
+router.get('/quiz/:courseId/:title', QuizController.getQuiz);
+router.post('/quiz/:courseId/:title', QuizController.createQuiz);
 
 // router.get('/courses/:courseId/units/:id', CourseController.getUnit);
 // router.put('/courses/:courseId/units/:id', CourseController.updateUnit);

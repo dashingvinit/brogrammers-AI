@@ -15,6 +15,22 @@ const topicRepository = new TopicRepository();
 // The Gemini 1.5 models are versatile and work with most use cases
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 
+async function getQnAs(title, topic, userPrompt) {
+  try {
+    const prompt = `Generate some ${userPrompt} questions and answers on ${topic} from ${title},
+    The markdown content should be properly formated so that its readable. Dont put JSON inside content feild. The keynotes should serve as review notes. Format the response in JSON as follows:
+    {"questions": [{"question": "question 1","ans": "answer"},{"question": "question 2","ans": "answer"}...]}`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response.text();
+    let questions = response.trim().replace(/^```json\n|```$/g, '');
+    questions = JSON.parse(questions);
+    return questions.questions;
+  } catch (error) {
+    console.log('keynotes error', error);
+  }
+}
+
 async function getKeyNotes(title) {
   const keyPrompt = `Generate a summary on the topic "${title}", using references from the subtopics containing the following sections:
 - Important definations & formulas
@@ -162,6 +178,7 @@ async function getImproved(object) {
 
 module.exports = {
   getKeyNotes,
+  getQnAs,
   getRoadMap,
   getTopic,
   getSummary,

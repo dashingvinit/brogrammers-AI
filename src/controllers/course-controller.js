@@ -1,7 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
-const { CourseService } = require('../services');
+const { CourseService, OpenAIService } = require('../services');
 const { successResponse, errorResponse } = require('../utils/common');
-const { OpenAIService } = require('../services');
 
 async function getCourses(req, res) {
   try {
