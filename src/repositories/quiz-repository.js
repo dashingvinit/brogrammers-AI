@@ -10,6 +10,11 @@ class BasketRepository extends CrudRepository {
     const quizzes = await Quiz.find({ courseId: id });
     return quizzes;
   }
+
+  async removeQuiz(id) {
+    const quizzes = await Quiz.deleteMany({ courseId: id });
+    return quizzes;
+  }
 }
 
 module.exports = BasketRepository;

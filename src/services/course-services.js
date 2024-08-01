@@ -3,6 +3,7 @@ const {
   UserRepository,
   TopicRepository,
   CollectionRepository,
+  QuizRepository,
 } = require('../repositories');
 const AppError = require('../utils/errors/app-error');
 const { StatusCodes } = require('http-status-codes');
@@ -11,6 +12,7 @@ const courseRepository = new CourseRepository();
 const userRepository = new UserRepository();
 const topicRepository = new TopicRepository();
 const collectionRepository = new CollectionRepository();
+const quizRepository = new QuizRepository();
 
 async function getCourses() {
   try {
@@ -156,6 +158,7 @@ async function deleteCourse(id) {
     const collection = await collectionRepository.removeCourse(id);
     const topics = await topicRepository.destroyAll(id);
     const recents = await userRepository.removeRecentlyViewed(id);
+    const removeQuiz = await quizRepository.removeQuiz(id);
     const course = await courseRepository.destroy(id);
     if (!course) {
       throw new AppError(
