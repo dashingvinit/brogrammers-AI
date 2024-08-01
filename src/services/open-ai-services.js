@@ -12,13 +12,12 @@ const { scrapeGoogleSearch } = require('./scrap-services');
 
 const topicRepository = new TopicRepository();
 
-// The Gemini 1.5 models are versatile and work with most use cases
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 async function getQnAs(title, topic, userPrompt) {
   try {
     const prompt = `Generate some ${userPrompt} questions and answers on ${topic} from ${title},
-    The markdown content should be properly formated so that its readable. Dont put JSON inside content feild. The keynotes should serve as review notes. Format the response in JSON as follows:
+    The markdown content should be properly formated so that its readable. This should contain some critical questions as well. Format the response in JSON as follows:
     {"questions": [{"question": "question 1","ans": "answer"},{"question": "question 2","ans": "answer"}...]}`;
 
     const result = await model.generateContent(prompt);
@@ -55,7 +54,23 @@ async function getKeyNotes(title) {
 }
 
 async function getRoadMap(title, time) {
-  const roadMapPrompt = `generate a roadmap for ${title} that consists all the topics and subtopics that can be finished in ${time}. The roadmap should be structured with number on each title and the output should be in JSON format like this. Here is the example: '{"units": [{"title": "Unit 1","time": "25 mins","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "1 hour","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' just return JSON dont give additional texts or explanations`;
+  const roadMapPrompt = `generate a roadmap for ${title} in JSON format based on the provided time.
+
+The roadmap should include units with titles, estimated time, and topics.
+
+Determine the number of units based on ${time}:
+  * For ${time} < 10, create 2-3 units.
+  * For 10 <= ${time} < 20, create 4-6 units.
+  * For ${time} >= 20, create 6+ units.
+
+Allocate time to each unit proportionally based on the total time and number of units.
+
+For each unit:
+  * Generate a title relevant to the overall topic.
+  * Estimate time based on the allocated time.
+  * Create topics related to the unit's title.
+  
+ Here is the example: '{"units": [{"title": "Unit 1","time": "25 mins","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "1 hour","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' just return JSON dont give additional texts or explanations`;
 
   try {
     const result = await model.generateContent(roadMapPrompt);
