@@ -56,19 +56,19 @@ async function getKeyNotes(title) {
 async function getRoadMap(title, time) {
   const roadMapPrompt = `generate a roadmap for ${title} in JSON format based on the provided time.
 
-The roadmap should include units with titles, estimated time, and topics.
+  The roadmap should include units with titles, estimated time, and topics.
 
-Determine the number of units based on ${time}:
-  * For ${time} < 10, create 2-3 units.
-  * For 10 <= ${time} < 20, create 4-6 units.
-  * For ${time} >= 20, create 6+ units.
+  Determine the number of units based on ${time}:
+    * For ${time} < 10, create 2-3 units.
+    * For 10 <= ${time} < 20, create 4-6 units.
+    * For ${time} >= 20, create 6+ units.
 
-Allocate time to each unit proportionally based on the total time and number of units.
+  Allocate time to each unit proportionally based on the total time and number of units.
 
-For each unit:
-  * Generate a title relevant to the overall topic.
-  * Estimate time based on the allocated time.
-  * Create topics related to the unit's title.
+  For each unit:
+    * Generate a title relevant to the overall topic.
+    * Estimate time based on the allocated time.
+    * Create topics related to the unit's title.
   
  Here is the example: '{"units": [{"title": "Unit 1","time": "25 mins","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "1 hour","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' just return JSON dont give additional texts or explanations`;
 
@@ -104,7 +104,7 @@ async function getTopic(id, subject, title, time) {
 
     For all subjects: Leverage images, infographics, tables, graphs to visually explain complex points.
     For specific subjects:
-    CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks).
+    CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks) with time & space complexities if applicalble.
     Mathematics: Utilize diagrams, charts, or equations (formatted with LaTeX or Mermaid syntax) to enhance understanding.
     Sciences: Integrate interactive elements like simulations or visualizations (depending on the platform) to make the learning experience dynamic.
     Prompt Tweaks:
@@ -172,7 +172,7 @@ async function getImproved(object) {
   try {
     const prompt = `Here is a blog model with data provided by the user: ${JSON.stringify(
       object
-    )}. Can you improve the content of the entire blog without fabricating new details, just join all the data fields and maybe write full forms if something is written in short form to make it more readable.Do very minor changes in the text just to make it readable. Blog might contain hindi words dont try to change them. Return in nicely formated markdown language`;
+    )}. Can you improve the content of the entire blog without fabricating new details, just join all the data fields.Do very minor changes in the text just to make it readable and consise. If their are no linkedin, instagram, tweeter links dont add the You can find me on: section, also do not add any note. Blog might contain hindi words dont try to change them. Return in nicely formated markdown language`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;

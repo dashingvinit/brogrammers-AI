@@ -5,6 +5,7 @@ const placementStorySchema = new Schema({
   userId: { type: String, ref: 'User', required: true },
   studentName: { type: String, required: true },
   academicBackground: { type: String, required: true },
+  bio: { type: String },
   cgpa: { type: String },
   jobRole: { type: String, required: true },
   companyName: { type: String, required: true },
