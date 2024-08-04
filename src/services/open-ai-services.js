@@ -59,9 +59,9 @@ async function getRoadMap(title, time) {
   The roadmap should include units with titles, estimated time, and topics.
 
   Determine the number of units based on ${time}:
-    * For ${time} < 10, create 2-3 units.
-    * For 10 <= ${time} < 20, create 4-6 units.
-    * For ${time} >= 20, create 6+ units.
+    * For ${time} < 10 hrs, create 2-3 units.
+    * For 10 <= ${time} < 20 hrs, create 4-6 units.
+    * For ${time} >= 20 hrs, create 6+ units.
 
   Allocate time to each unit proportionally based on the total time and number of units.
 
