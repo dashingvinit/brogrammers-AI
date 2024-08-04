@@ -59,28 +59,28 @@ async function getKeyNotes(title) {
 
 async function getRoadMap(title, time) {
   const roadMapPrompt = `generate a roadmap for ${title} in JSON format based on the provided time.
+  
+
 
   The roadmap should include units with titles, estimated time, and topics.
-
-  Determine the number of units based on ${time}:
-    * For ${time} < 10 hrs, create 2-3 units.
-    * For 10 <= ${time} < 20 hrs, create 4-6 units.
-    * For ${time} >= 20 hrs, create 6+ units.
-
-  Allocate time to each unit proportionally based on the total time and number of units.
-
-  For each unit:
-    * Generate a title relevant to the overall topic.
-    * Estimate time based on the allocated time.
-    * Create topics related to the unit's title.
   
  Here is the example: '{"units": [{"title": "Unit 1","time": "25 mins","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "1 hour","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' just return JSON dont give additional texts or explanations`;
+
+  //  Determine the number of units based on ${time}:
+  //  * For ${time} < 10 hrs, create 2-3 units.
+  //  * For 10 <= ${time} < 20 hrs, create 4-6 units.
+  //  * For ${time} >= 20 hrs, create 6+ units.
+
+  // For each unit:
+  //  * Estimate time based on the allocated time.
+  //  * Create topics related to the unit's title.
 
   try {
     const result = await model.generateContent(roadMapPrompt);
     const response = await result.response;
     let units = await response.text();
     units = units.trim().replace(/^```json\n|```$/g, '');
+    console.log(units);
     if (!units) throw new Error('Received empty response from AI model');
 
     let parsedUnits;
