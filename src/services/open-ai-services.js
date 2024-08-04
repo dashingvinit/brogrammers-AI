@@ -33,6 +33,7 @@ async function getQnAs(title, topic, userPrompt) {
 async function getKeyNotes(title) {
   const keyPrompt = `Generate a summary on the topic "${title}", using references from the subtopics containing the following sections:
 - Important definations & formulas
+- Time & Space complexities (if applicable)
 - Differences , this vs that 
 - Essential concepts (definations)
 - Important topics to keep in mind
@@ -112,7 +113,7 @@ async function getTopic(id, subject, title, time) {
     Hook 'em early: Start with an interesting anecdote, a thought-provoking question, or a relevant image to grab the reader's attention.
     Examples are king: Use real-world examples, case studies, or relatable scenarios to illustrate the concept.
 
-    For all subjects: Leverage images, infographics, tables, graphs to visually explain complex points.
+    For all subjects: Leverage images, definations, infographics, tables, graphs to visually explain complex points.
     For specific subjects:
     CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks) with time & space complexities if applicalble.
     Mathematics: Utilize diagrams, charts, or equations (formatted with LaTeX or Mermaid syntax) to enhance understanding.
@@ -121,7 +122,7 @@ async function getTopic(id, subject, title, time) {
 
     Maintain a conversational style: Imagine explaining the topic to a curious friend.
     Embrace enthusiasm: Show excitement for the subject and its applications.
-    Tailor the tone: Adjust the formality depending on the target audience (e.g., more playful for kids, more professional for business topics, and a neutral tone for engineering topics).
+    Tailor the tone: Adjust the formality depending on the target audience (e.g., more professional for business topics, and a neutral tone for engineering topics).
 
     Keep it concise and information filled.
     `;
