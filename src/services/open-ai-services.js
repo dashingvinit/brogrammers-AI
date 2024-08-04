@@ -77,9 +77,19 @@ async function getRoadMap(title, time) {
     const response = await result.response;
     let units = await response.text();
     units = units.trim().replace(/^```json\n|```$/g, '');
-    units = JSON.parse(units);
+    if (!units) throw new Error('Received empty response from AI model');
 
-    return units.units;
+    let parsedUnits;
+    try {
+      parsedUnits = JSON.parse(units);
+    } catch (parseError) {
+      throw new Error('Error parsing JSON response: ' + parseError.message);
+    }
+
+    if (!Array.isArray(parsedUnits.units))
+      throw new Error('Invalid roadmap structure received');
+
+    return parsedUnits.units;
   } catch (error) {
     if (error.response) {
       console.error('genAI error response:', error.response.data);
