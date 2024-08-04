@@ -1,13 +1,9 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { GEMINI_KEY } = require('../config/server-config');
 const genAI = new GoogleGenerativeAI(GEMINI_KEY);
-
+const { StatusCodes } = require('http-status-codes');
 const AppError = require('../utils/errors/app-error');
-const {
-  StatusCodes,
-  HTTP_VERSION_NOT_SUPPORTED,
-} = require('http-status-codes');
-const { CourseRepository, TopicRepository } = require('../repositories');
+const { TopicRepository } = require('../repositories');
 const { scrapeGoogleSearch } = require('./scrap-services');
 
 const topicRepository = new TopicRepository();
@@ -17,22 +13,26 @@ const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 async function getQnAs(title, topic, userPrompt) {
   try {
     const prompt = `Generate some ${userPrompt} questions and answers on ${topic} from ${title},
-    The markdown content should be properly formated so that its readable. This should contain some critical questions as well. Format the response in JSON as follows:
+    The markdown content should be properly formated so that its readable. This should contain some differences, definations, critical questions as well. Format the response in JSON as follows:
     {"questions": [{"question": "question 1","ans": "answer"},{"question": "question 2","ans": "answer"}...]}`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response.text();
     let questions = response.trim().replace(/^```json\n|```$/g, '');
     questions = JSON.parse(questions);
+
     return questions.questions;
   } catch (error) {
-    console.log('keynotes error', error);
+    throw new AppError(
+      'Cannot delete the course',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
   }
 }
 
 async function getKeyNotes(title) {
-  const keyPrompt = `Generate a summary on the topic "${title}", using references from the subtopics containing the following sections:
-- Important definations & formulas
+  const keyPrompt = `Generate a detailed summary on the topic "${title}", using references from the subtopics containing the following sections:
+- Important definations (detailed) & formulas
 - Time & Space complexities (if applicable)
 - Differences , this vs that 
 - Essential concepts (definations)
@@ -50,7 +50,10 @@ async function getKeyNotes(title) {
     keyNotes = JSON.parse(keyNotes);
     return keyNotes.keyNotes;
   } catch (error) {
-    console.log('keynotes error', error);
+    throw new AppError(
+      'Cannot delete the course',
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
   }
 }
 
