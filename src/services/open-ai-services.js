@@ -58,10 +58,8 @@ async function getKeyNotes(title) {
 }
 
 async function getRoadMap(title, time) {
-  const roadMapPrompt = `generate a roadmap for ${title} in JSON format based on the provided time.
+  const roadMapPrompt = `generate a roadmap for ${title} in JSON format based on the provided time ${time}.
   
-
-
   The roadmap should include units with titles, estimated time, and topics.
   
  Here is the example: '{"units": [{"title": "Unit 1","time": "25 mins","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "1 hour","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' just return JSON dont give additional texts or explanations`;
@@ -80,7 +78,6 @@ async function getRoadMap(title, time) {
     const response = await result.response;
     let units = await response.text();
     units = units.trim().replace(/^```json\n|```$/g, '');
-    console.log(units);
     if (!units) throw new Error('Received empty response from AI model');
 
     let parsedUnits;
@@ -109,25 +106,19 @@ async function getRoadMap(title, time) {
 
 async function getTopic(id, subject, title, time) {
   try {
-    const prompt = `## ${title} A subtopic of ${subject}
+    const prompt = `## Generate in depth explanation and details about ${title} A subtopic of ${subject}
     Content with Flair:
 
-    Break the mold: Instead of bullet points everywhere, use a mix of formats like short paragraphs, concise explanations, and even fun facts.
     Hook 'em early: Start with an interesting anecdote, a thought-provoking question, or a relevant image to grab the reader's attention.
     Examples are king: Use real-world examples, case studies, or relatable scenarios to illustrate the concept.
 
     For all subjects: Leverage images, definations, infographics, tables, graphs to visually explain complex points.
     For specific subjects:
-    CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks) with time & space complexities if applicalble.
-    Mathematics: Utilize diagrams, charts, or equations (formatted with LaTeX or Mermaid syntax) to enhance understanding.
-    Sciences: Integrate interactive elements like simulations or visualizations (depending on the platform) to make the learning experience dynamic.
+    CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks) with if applicalble, for algorithms give time and space complexities.
+
     Prompt Tweaks:
-
-    Maintain a conversational style: Imagine explaining the topic to a curious friend.
-    Embrace enthusiasm: Show excitement for the subject and its applications.
-    Tailor the tone: Adjust the formality depending on the target audience (e.g., more professional for business topics, and a neutral tone for engineering topics).
-
-    Keep it concise and information filled.
+    Give in depth topic explanation and subtopics.
+    Keep it detailed and information filled.
     `;
 
     const result = await model.generateContent(prompt);

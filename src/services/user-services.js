@@ -2,8 +2,32 @@ const { UserRepository } = require('../repositories');
 const AppError = require('../utils/errors/app-error');
 const { StatusCodes } = require('http-status-codes');
 const { Auth } = require('../utils/common');
+const XLSX = require('xlsx');
 
 const userRepository = new UserRepository();
+
+async function getUsers() {
+  // Fetch all users
+  const users = await userRepository.getAll();
+
+  // Map the user data to match desired headers
+  const userData = users.map((user) => ({
+    Recipient: user.email,
+    Name: user.name,
+    id: user._id,
+    Sent: '',
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(userData);
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Users');
+
+  const filePath = 'users.xlsx';
+  XLSX.writeFile(wb, filePath);
+
+  console.log(`Excel file created at ${filePath}`);
+}
 
 async function createUser(data) {
   try {
