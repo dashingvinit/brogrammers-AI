@@ -10,8 +10,10 @@ async function getUsers() {
   // Fetch all users
   const users = await userRepository.getAll();
 
+  const filteredUsers = users.filter((user) => user.premium.isActive);
+
   // Map the user data to match desired headers
-  const userData = users.map((user) => ({
+  const userData = filteredUsers.map((user) => ({
     Recipient: user.email,
     Name: user.name,
     id: user._id,
@@ -28,6 +30,8 @@ async function getUsers() {
 
   console.log(`Excel file created at ${filePath}`);
 }
+
+// getUsers();
 
 async function createUser(data) {
   try {

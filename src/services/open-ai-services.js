@@ -34,13 +34,13 @@ async function getKeyNotes(title) {
   const keyPrompt = `Generate a detailed summary on the topic "${title}", using references from the subtopics containing the following sections:
 - Important definations (detailed) & formulas
 - Time & Space complexities (if applicable)
-- Differences , this vs that 
+- Differences , this vs that (if applicable)
 - Essential concepts (definations)
 - Important topics to keep in mind
 - Important questions
 - Critical dates and events (if applicable)
 - Notable figures and their contributions (if applicable)
- The markdown content should be properly formated so that its readable. Dont put JSON inside content feild. The keynotes should serve as review notes. Format the response in JSON as follows:
+ The markdown content should be properly formated so that its readable with  good spacing between lines. Dont put JSON inside content feild. The keynotes should serve as review notes. Format the response in JSON as follows:
 {"keyNotes": [{"title": "title 1","content": "content"},{"title": "title 2","content": "content"}...]}`;
 
   try {
@@ -109,7 +109,7 @@ async function getTopic(id, subject, title, time) {
     const prompt = `## Generate in depth explanation and details about ${title} A subtopic of ${subject}
     Content with Flair:
 
-    Hook 'em early: Start with an interesting anecdote, a thought-provoking question, or a relevant image to grab the reader's attention.
+    Start with an interesting anecdote, a thought-provoking question, or a relevant image to grab the reader's attention.
     Examples are king: Use real-world examples, case studies, or relatable scenarios to illustrate the concept.
 
     For all subjects: Leverage images, definations, infographics, tables, graphs to visually explain complex points.
@@ -117,6 +117,7 @@ async function getTopic(id, subject, title, time) {
     CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks) with if applicalble, for algorithms give time and space complexities.
 
     Prompt Tweaks:
+    It should be short and non bookish, nor conversation style. It should be like just informatons.
     Give in depth topic explanation and subtopics.
     Keep it detailed and information filled.
     `;
