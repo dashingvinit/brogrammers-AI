@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const unitSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  time: { type: String, required: true }, // Made `required` true as well
+  time: { type: String }, // Made `required` true as well
   topics: [{ type: String, required: true }], // Each topic is required
 });
 
