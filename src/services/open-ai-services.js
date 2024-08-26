@@ -107,17 +107,12 @@ async function getRoadMap(title, time) {
 async function getTopic(id, subject, title, time) {
   try {
     const prompt = `## Generate in depth explanation and details about ${title} A subtopic of ${subject}
-    Content with Flair:
-
-    Start with an interesting anecdote, a thought-provoking question, or a relevant image to grab the reader's attention.
-    Examples are king: Use real-world examples, case studies, or relatable scenarios to illustrate the concept.
-
+    
     For all subjects: Leverage images, definations, infographics, tables, graphs to visually explain complex points.
     For specific subjects:
     CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks) with if applicalble, for algorithms give time and space complexities.
 
     Prompt Tweaks:
-    It should be short and non bookish, nor conversation style. It should be like just informatons.
     Give in depth topic explanation and subtopics.
     Keep it detailed and information filled.
     `;
