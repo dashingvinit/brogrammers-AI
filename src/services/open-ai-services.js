@@ -109,7 +109,8 @@ async function getTopic(id, subject, title, time) {
     const prompt = `## What is ${title} of ${subject}. Cover all the topics realted to this topic.
     For all subjects: Leverage definations, tables, graphs to visually explain complex points.
     For specific subjects:
-    CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks) with if applicalble, for algorithms give time and space complexities.`;
+    
+    CSE (C++): if applicable include relevant code snippets for subjects like data structures and algorithms with clear comments explaining each line's purpose (formatted as code blocks), for algorithms give time and space complexities.`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
