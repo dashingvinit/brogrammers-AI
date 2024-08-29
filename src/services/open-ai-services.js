@@ -106,16 +106,10 @@ async function getRoadMap(title, time) {
 
 async function getTopic(id, subject, title, time) {
   try {
-    const prompt = `## Generate in depth explanation and details about ${title} A subtopic of ${subject}
-    
-    For all subjects: Leverage images, definations, infographics, tables, graphs to visually explain complex points.
+    const prompt = `## What is ${title} of ${subject}. Cover all the topics realted to this topic.
+    For all subjects: Leverage definations, tables, graphs to visually explain complex points.
     For specific subjects:
-    CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks) with if applicalble, for algorithms give time and space complexities.
-
-    Prompt Tweaks:
-    Give in depth topic explanation and subtopics.
-    Keep it detailed and information filled.
-    `;
+    CSE (C++): Include relevant code snippets with clear comments explaining each line's purpose (formatted as code blocks) with if applicalble, for algorithms give time and space complexities.`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
