@@ -8,4 +8,5 @@ module.exports = {
   CommentRepository: require('./comment-repository'),
   DSAProgressRepositoy: require('./dsa-progress-repository'),
   BasketRepository: require('./basket-repository'),
+  ProductRepository: require('./product-repository'),
 };

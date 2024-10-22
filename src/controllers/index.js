@@ -9,4 +9,5 @@ module.exports = {
   DSAProgressController: require('./dsa-progress-controller'),
   PaymentController: require('./payment-controller'),
   BasketController: require('./basket-controller'),
+  ProductController: require('./product-controller'),
 };

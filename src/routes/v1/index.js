@@ -9,6 +9,7 @@ const commentsRoutes = require('./comment-route');
 const dsaRoutes = require('./dsa-route');
 const paymentRoutes = require('./payment-routes');
 const basketRoutes = require('./basket-routes');
+const productRoutes = require('./product-routes');
 
 router.use('/user', userRoutes);
 router.use('/course', courseRoutes);
@@ -18,5 +19,7 @@ router.use('/comments', commentsRoutes);
 router.use('/dsa', dsaRoutes);
 router.use('/payment', paymentRoutes);
 router.use('/basket', basketRoutes);
+
+router.use('/retoure', productRoutes);
 
 module.exports = router;

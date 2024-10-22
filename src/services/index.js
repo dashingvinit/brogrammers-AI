@@ -9,4 +9,5 @@ module.exports = {
   CommentService: require('./comment-services.js'),
   DSAProgressServices: require('./dsa-progress-services.js'),
   BasketServices: require('./basket-services'),
+  ProductServices: require('./product-services'),
 };
