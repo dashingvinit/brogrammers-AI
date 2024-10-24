@@ -7,12 +7,12 @@ const ProductSchema = new Schema({
   images: [{ type: String, required: true }],
   foundDate: { type: Date },
   foundLocation: { type: String },
-  uploader_details: {
-    name: { type: String, required: true },
-    uid: { type: String, required: true },
-    contact: { type: Number, required: true },
+  finder_details: {
+    name: { type: String },
+    uid: { type: String },
+    contact: { type: Number },
   },
-  claimer_details: {
+  owner_details: {
     name: { type: String },
     uid: { type: String },
     contact: { type: Number },
