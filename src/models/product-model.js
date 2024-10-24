@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ProductSchema = new Schema({
   title: { type: String, required: true },
   desc: { type: String },
-  images: [{ type: String, required: true }],
+  images: { type: String, required: true },
   foundDate: { type: Date },
   foundLocation: { type: String },
   finder_details: {
