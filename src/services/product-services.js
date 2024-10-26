@@ -1,6 +1,7 @@
 const { ProductRepository } = require('../repositories');
 const { StatusCodes } = require('http-status-codes');
 const AppError = require('../utils/errors/app-error');
+const { S3 } = require('../config');
 
 const productRepository = new ProductRepository();
 
@@ -10,10 +11,7 @@ async function getProduct() {
     return baskets.reverse();
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot get products',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot get products', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -23,10 +21,7 @@ async function createProduct(data) {
     return product;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot create object',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot create object', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -36,11 +31,25 @@ async function claimProduct(id, data) {
     return product;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot claim object',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot claim object', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
-module.exports = { getProduct, createProduct, claimProduct };
+async function getSignedUrl(data, format) {
+  try {
+    let parts = format.split('/');
+    let ext = parts[1];
+    let type = parts[0];
+    const fileName = `product${data}/${type}.${ext}`;
+
+    const uploadUrl = await S3.putSignedFileUrl(fileName, format);
+    const dbLink = await S3.getSignedFileUrl(fileName);
+
+    return { uploadUrl, dbLink };
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError('Cannot claim object', StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
+module.exports = { getProduct, createProduct, claimProduct, getSignedUrl };
