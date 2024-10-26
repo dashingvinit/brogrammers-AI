@@ -12,4 +12,8 @@ module.exports = {
   CLERK_KEY_PRO: process.env.CLERK_KEY_PRO,
   R_KEY_ID: process.env.KEY_ID,
   R_KEY_SECRET: process.env.KEY_SECRET,
+  //S3 stuff
+  accessKeyId: process.env.ACCESS_KEY,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  Bucket: process.env.AWS_S3_BUCKET,
 };
