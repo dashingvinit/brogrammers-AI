@@ -42,7 +42,7 @@ async function claimProduct(req, res) {
 async function getSignedUrl(req,res){
   try {
     const url = await S3.getSignedFileUrl(req.body.fileName);
-    const updates = await ProductServices.
+    // const updates = await ProductServices.
     return url;
   } catch (error) {
     errorResponse.error = error;
