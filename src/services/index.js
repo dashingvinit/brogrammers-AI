@@ -7,7 +7,6 @@ module.exports = {
   PlacementService: require('./placement-services'),
   CollectionService: require('./collection-services'),
   CommentService: require('./comment-services.js'),
-  DSAProgressServices: require('./dsa-progress-services.js'),
   BlindServices: require('./blind-services.js'),
   BasketServices: require('./basket-services'),
 

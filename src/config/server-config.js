@@ -8,6 +8,7 @@ module.exports = {
   JWT_EXPIRY: process.env.JWT_EXPIRY,
   JWT_SECRET: process.env.JWT_SECRET,
   GEMINI_KEY: process.env.GEMINI_KEY,
+  OPENAI_KEY: process.nextTick.OPENAI_API_KEY,
   CLERK_KEY: process.env.CLERK_KEY,
   CLERK_KEY_PRO: process.env.CLERK_KEY_PRO,
   R_KEY_ID: process.env.KEY_ID,

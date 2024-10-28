@@ -6,7 +6,6 @@ module.exports = {
   PlacementController: require('./placement-controller'),
   CollectionController: require('./collection-controller'),
   CommentController: require('./comment-controller'),
-  DSAProgressController: require('./dsa-progress-controller'),
   BlindController: require('./blind-controller'),
   PaymentController: require('./payment-controller'),
   BasketController: require('./basket-controller'),

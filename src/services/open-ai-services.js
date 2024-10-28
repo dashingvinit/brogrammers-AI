@@ -1,12 +1,12 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { GEMINI_KEY } = require('../config/server-config');
-const genAI = new GoogleGenerativeAI(GEMINI_KEY);
 const { StatusCodes } = require('http-status-codes');
 const AppError = require('../utils/errors/app-error');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { GEMINI_KEY } = require('../config/server-config');
 const { TopicRepository } = require('../repositories');
 const { scrapeGoogleSearch } = require('./scrap-services');
 
 const topicRepository = new TopicRepository();
+const genAI = new GoogleGenerativeAI(GEMINI_KEY);
 
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
@@ -23,10 +23,7 @@ async function getQnAs(title, topic, userPrompt) {
 
     return questions.questions;
   } catch (error) {
-    throw new AppError(
-      'Cannot delete the course',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot delete the course', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -50,10 +47,7 @@ async function getKeyNotes(title) {
     keyNotes = JSON.parse(keyNotes);
     return keyNotes.keyNotes;
   } catch (error) {
-    throw new AppError(
-      'Cannot delete the course',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot delete the course', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -87,8 +81,7 @@ async function getRoadMap(title, time) {
       throw new Error('Error parsing JSON response: ' + parseError.message);
     }
 
-    if (!Array.isArray(parsedUnits.units))
-      throw new Error('Invalid roadmap structure received');
+    if (!Array.isArray(parsedUnits.units)) throw new Error('Invalid roadmap structure received');
 
     return parsedUnits.units;
   } catch (error) {
@@ -118,8 +111,7 @@ async function getTopic(id, subject, title, time) {
     let data = await response.text();
 
     const suggestedVideos = await scrapeGoogleSearch(subject, title);
-    if (!data || data == null)
-      data = 'Gemini model couldnt generate for some reason';
+    if (!data || data == null) data = 'Gemini model couldnt generate for some reason';
 
     const topic = await topicRepository.create({
       courseId: id,
@@ -135,10 +127,7 @@ async function getTopic(id, subject, title, time) {
     } else {
       console.error('An error occurred:', error.message);
     }
-    throw new AppError(
-      'Cannot create a new Course object',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot create a new Course object', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -158,10 +147,7 @@ async function getSummary(title) {
     } else {
       console.error('An error occurred:', error.message);
     }
-    throw new AppError(
-      'Cannot create a new Course object',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot create a new Course object', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 

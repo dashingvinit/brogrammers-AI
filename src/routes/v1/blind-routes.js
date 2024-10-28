@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { BlindController } = require('../../controllers');
 
-router.get('/:id', BlindController.get);
-router.patch('/:id/:qs', BlindController.patch);
+router.get('/blind/:id', BlindController.get);
+router.patch('/blind/:id/:qs', BlindController.patch);
 
 module.exports = router;

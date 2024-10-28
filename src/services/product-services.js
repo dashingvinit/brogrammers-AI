@@ -40,7 +40,7 @@ async function getSignedUrl(data, format) {
     let parts = format.split('/');
     let ext = parts[1];
     let type = parts[0];
-    const fileName = `product${data}/${type}.${ext}`;
+    const fileName = `product/${data}_${type}.${ext}`;
 
     const uploadUrl = await S3.putSignedFileUrl(fileName, format);
     const dbLink = await S3.getSignedFileUrl(fileName);
