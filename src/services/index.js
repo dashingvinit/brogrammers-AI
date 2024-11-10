@@ -1,5 +1,6 @@
 module.exports = {
   OpenAIService: require('./open-ai-services'),
+  LangChainService: require('./langchain-services'),
   UserService: require('./user-services'),
   CourseService: require('./course-services'),
   TopicService: require('./topic-services'),
@@ -8,7 +9,8 @@ module.exports = {
   CollectionService: require('./collection-services'),
   CommentService: require('./comment-services.js'),
   BlindServices: require('./blind-services.js'),
+  ProblemServices: require('./problem-services'),
+  SolutionServices: require('./solution-services'),
   BasketServices: require('./basket-services'),
-
   ProductServices: require('./product-services'),
 };

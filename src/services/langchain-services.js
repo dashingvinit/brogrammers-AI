@@ -1,31 +1,107 @@
 const { StatusCodes } = require('http-status-codes');
 const AppError = require('../utils/errors/app-error');
+const { GEMINI_KEY } = require('../config/server-config');
 
-const { ChatMistralAI } = require('@langchain/mistralai');
+const { ChatGoogleGenerativeAI } = require('@langchain/google-genai');
 const { HumanMessage, SystemMessage } = require('@langchain/core/messages');
 const { StringOutputParser } = require('@langchain/core/output_parsers');
 const { ChatPromptTemplate } = require('@langchain/core/prompts');
 
-const model = new ChatMistralAI({
-  apiKey: '5HZOdqa3f0brHUDjHdkBuMXM3wQfTcZQ',
-  model: 'mistral-large-latest',
-  temperature: 0,
+const model = new ChatGoogleGenerativeAI({
+  apiKey: GEMINI_KEY,
+  modelName: 'gemini-1.5-flash',
+  maxOutputTokens: 2048,
 });
+
 const parser = new StringOutputParser();
 
-const messages = [
-  new SystemMessage(`Translate the following from English into Italian`),
-  new HumanMessage('Hello'),
-];
-
-async function translateAndPrint() {
-  try {
-    const chain = model.pipe(parser);
-    const result = await chain.invoke(messages);
-    console.log(result);
-  } catch (error) {
-    console.error('Error:', error);
-  }
+async function codeExplainer(code) {
+  const messages = [
+    new SystemMessage(`
+      Explain the following code in simple terms. Format your response in markdown with:
+      - A brief overview as the first paragraph
+      - Use ### for section headers
+      - Code examples in \`\`\`language blocks
+      - Bullet points for key concepts
+      - Clear paragraph breaks between sections
+    `),
+    new HumanMessage(code),
+  ];
+  const data = await model.pipe(parser).invoke(messages);
+  return data;
 }
 
-translateAndPrint();
+async function problemExplainer(problemStatement) {
+  const messages = [
+    new SystemMessage(`
+      Provide a detailed explanation for the following problem statement. Format your response in markdown with:
+      - ### Problem Understanding as first section
+      - ### Key Concepts as second section
+      - Use bullet points for listing important points
+      - Ensure proper spacing between sections
+    `),
+    new HumanMessage(problemStatement),
+  ];
+  const response = await model.pipe(parser).invoke(messages);
+  return response;
+}
+
+async function codeComplexityAnalyzer(code) {
+  const messages = [
+    new SystemMessage(`
+      Analyze the code and return ONLY the worst-case time and space complexities in Big O notation.
+      Format your response exactly like this example:
+      Time: O(n log n)
+      Space: O(n)
+      
+      Use standard complexity notations: O(1), O(log n), O(n), O(n log n), O(n^2), O(n^3), O(2^n)
+      Don't include any other text or explanations.
+    `),
+    new HumanMessage(code),
+  ];
+
+  const response = await model.pipe(parser).invoke(messages);
+  return response.trim();
+}
+
+async function feedbackReport(code) {
+  const messages = [
+    new SystemMessage(`
+      Provide a feedback report for this code. Format your response in markdown with:
+      - ### Code Quality Overview as first section
+      - ### Strengths as second section
+      - ### Areas for Improvement as third section
+      - ### Recommendations as fourth section
+      - Use bullet points for specific feedback items
+      - Include code examples in \`\`\`language blocks
+    `),
+    new HumanMessage(code),
+  ];
+  const response = await model.pipe(parser).invoke(messages);
+  return response;
+}
+
+async function hintGenerator(problemStatement, previousHint) {
+  const messages = [
+    new SystemMessage(`
+      Provide a hint for the following problem. Format your response in markdown with:
+      - Start with a ### Hint header
+      - Use bullet points for step-by-step guidance
+      - Include relevant concepts in *italic*
+      - Put example cases in \`code blocks\`
+      - Keep hints subtle but helpful
+    `),
+    new HumanMessage(`Problem: ${problemStatement}`),
+    new HumanMessage(`Previous Hint: ${previousHint || 'Start with the first hint'}`),
+  ];
+  const response = await model.pipe(parser).invoke(messages);
+  return response;
+}
+
+module.exports = {
+  codeExplainer,
+  problemExplainer,
+  codeComplexityAnalyzer,
+  feedbackReport,
+  hintGenerator,
+};

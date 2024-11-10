@@ -180,12 +180,7 @@ async function updateBookmarked(req, res) {
 async function updateSubscription(req, res) {
   try {
     const { userId, active, startDate, endDate } = req.body;
-    const user = await UserService.activatePremium(
-      userId,
-      active,
-      startDate,
-      endDate
-    );
+    const user = await UserService.activatePremium(userId, active, startDate, endDate);
     successResponse.data = user;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {

@@ -4,10 +4,7 @@ const cheerio = require('cheerio');
 async function scrapeGoogleSearch(topic, title) {
   try {
     const query = `videos on ${topic} ${title}`;
-    const url = `https://www.google.com/search?q=${query.replace(
-      ' ',
-      '+'
-    )}&tbm=vid`;
+    const url = `https://www.google.com/search?q=${query.replace(' ', '+')}&tbm=vid`;
 
     const headers = {
       'User-Agent':
@@ -27,9 +24,7 @@ async function scrapeGoogleSearch(topic, title) {
       if (count >= 4) {
         return false; // Break out of the loop
       }
-      const link = $(result)
-        .find('a[href^="https://www.youtube.com"]')
-        .attr('href');
+      const link = $(result).find('a[href^="https://www.youtube.com"]').attr('href');
       if (link) {
         const videoIdMatch = link.match(/(?<=v=)[^&#]+/);
         if (videoIdMatch) {

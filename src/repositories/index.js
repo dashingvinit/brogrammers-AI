@@ -7,6 +7,8 @@ module.exports = {
   CollectionRepository: require('./collection-repository'),
   CommentRepository: require('./comment-repository'),
   BlindRepository: require('./blind-repository'),
+  ProblemRepository: require('./problem-repository'),
+  SolutionRepository: require('./solution-repository'),
   BasketRepository: require('./basket-repository'),
 
   ProductRepository: require('./product-repository'),

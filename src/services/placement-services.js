@@ -11,10 +11,7 @@ async function getAllStories() {
     return stories;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find placement stories',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find placement stories', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -24,10 +21,7 @@ async function getStoryById(id) {
     return story;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find placement stories',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find placement stories', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -37,10 +31,7 @@ async function getLatest() {
     return story;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find placement stories',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find placement stories', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -50,10 +41,7 @@ async function getContinue(id) {
     return story;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find placement stories',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find placement stories', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -63,10 +51,7 @@ async function getBookmarked(id) {
     return story;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find placement stories',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find placement stories', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -76,10 +61,7 @@ async function createStory(data) {
     return story;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot create placement stories',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot create placement stories', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -89,10 +71,7 @@ async function deleteStory(id) {
     return story;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot create placement stories',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot create placement stories', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -102,10 +81,7 @@ async function updateStory(id, data) {
     return res;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot create placement stories',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot create placement stories', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 

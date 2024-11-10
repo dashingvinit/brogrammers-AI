@@ -40,8 +40,7 @@ async function checkOut(req, res) {
 
 async function verify(req, res) {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     const body = razorpay_order_id + '|' + razorpay_payment_id;
     const expectedSignature = crypto
       .createHmac('sha256', serverConfig.R_KEY_SECRET)
@@ -67,9 +66,7 @@ async function verify(req, res) {
         razorpay_payment_id,
         razorpay_signature
       );
-      res.redirect(
-        `https://brogrammers.in/payment?reference=${razorpay_payment_id}`
-      );
+      res.redirect(`https://brogrammers.in/payment?reference=${razorpay_payment_id}`);
     } else throw error;
   } catch (error) {
     console.log(error);
