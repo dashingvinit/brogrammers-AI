@@ -8,6 +8,7 @@ router.post('/explain', BuddyController.getExplanation);
 router.get('/hint', BuddyController.getHint);
 
 router.get('/visualize', BuddyController.getVisual);
+router.post('/analyze', BuddyController.analyze);
 router.get('/feedback', BuddyController.getFeedback);
 
 router.patch('/:id', BuddyController.patchProblem);

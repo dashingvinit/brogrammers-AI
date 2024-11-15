@@ -40,8 +40,25 @@ async function getHint(req, res) {
 
 async function getVisual(req, res) {
   try {
+    console.log('hello', req.body);
     const data = await LangChainService.codeExplainer(req.body.data);
     successResponse.data = data;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.INTERNAL_SERVER_ERROR).json(errorResponse);
+  }
+}
+
+async function analyze(req, res) {
+  try {
+    let data = await LangChainService.codeComplexityAnalyzer(req.body.data);
+    data = data
+      .replace(/```json|```/g, '')
+      .replace(/\n/g, '')
+      .trim();
+    const json = JSON.parse(data);
+    successResponse.data = json;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
     errorResponse.error = error;
@@ -77,5 +94,6 @@ module.exports = {
   getExplanation,
   getHint,
   getVisual,
+  analyze,
   getFeedback,
 };

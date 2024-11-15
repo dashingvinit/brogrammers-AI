@@ -4,6 +4,7 @@ const { GEMINI_KEY } = require('../config/server-config');
 
 const { ChatGoogleGenerativeAI } = require('@langchain/google-genai');
 const { HumanMessage, SystemMessage } = require('@langchain/core/messages');
+
 const { StringOutputParser } = require('@langchain/core/output_parsers');
 const { ChatPromptTemplate } = require('@langchain/core/prompts');
 
@@ -14,6 +15,19 @@ const model = new ChatGoogleGenerativeAI({
 });
 
 const parser = new StringOutputParser();
+
+async function codeComplexityAnalyzer(code) {
+  const messages = [
+    new SystemMessage(`
+     Analyze the provided code and return the worst-case time complexity and space complexity in Big O notation. Respond strictly in the following JSON format: {"tc": "O(n)", "sc": "O(1)"}. Use standard notations: O(1), O(logn), O(n), O(nlogn), O(n^2), O(n^3), O(2^n). Do not include any additional text or explanations.
+    `),
+    new HumanMessage(code),
+  ];
+
+  const response = await model.pipe(parser).invoke(messages);
+  let data = response.trim();
+  return data;
+}
 
 async function codeExplainer(code) {
   const messages = [
@@ -31,14 +45,14 @@ async function codeExplainer(code) {
   return data;
 }
 
-async function problemExplainer(problemStatement) {
+async function problemExplainer(problemStatement, userPrompt) {
   const messages = [
     new SystemMessage(`
       Provide a detailed explanation for the following problem statement. Format your response in markdown with:
       - ### Problem Understanding as first section
       - ### Key Concepts as second section
       - Use bullet points for listing important points
-      - Ensure proper spacing between sections
+      - dont include solution
     `),
     new HumanMessage(problemStatement),
   ];
@@ -50,7 +64,7 @@ async function codeComplexityAnalyzer(code) {
   const messages = [
     new SystemMessage(`
       Analyze the code and return ONLY the worst-case time and space complexities in Big O notation.
-      Format your response exactly like this example:
+      Format your response in json exactly like this example:
       Time: O(n log n)
       Space: O(n)
       

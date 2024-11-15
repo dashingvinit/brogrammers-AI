@@ -95,8 +95,8 @@ async function getTopic(id, subject, title, time) {
       For all subjects: Leverage definations, tables, graphs to visually explain complex points.
       For specific subjects:
       
-      CSE (C++): if applicable include relevant code snippets for subjects like data structures and algorithms with clear comments explaining each line's purpose (formatted as code blocks), for algorithms give time and space complexities.
-      Keep it short and to the point. Dont give huge passages to read.`;
+      CSE (C++): if applicable include relevant code snippets for subjects like data structures and algorithms with clear comments explaining each line's purpose, for algorithms give time and space complexities.
+      Keep it short and to the point. Dont give large passages to read.`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
