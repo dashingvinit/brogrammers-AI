@@ -16,19 +16,6 @@ const model = new ChatGoogleGenerativeAI({
 
 const parser = new StringOutputParser();
 
-async function codeComplexityAnalyzer(code) {
-  const messages = [
-    new SystemMessage(`
-     Analyze the provided code and return the worst-case time complexity and space complexity in Big O notation. Respond strictly in the following JSON format: {"tc": "O(n)", "sc": "O(1)"}. Use standard notations: O(1), O(logn), O(n), O(nlogn), O(n^2), O(n^3), O(2^n). Do not include any additional text or explanations.
-    `),
-    new HumanMessage(code),
-  ];
-
-  const response = await model.pipe(parser).invoke(messages);
-  let data = response.trim();
-  return data;
-}
-
 async function codeExplainer(code) {
   const messages = [
     new SystemMessage(`
@@ -60,22 +47,35 @@ async function problemExplainer(problemStatement, userPrompt) {
   return response;
 }
 
+// async function codeComplexityAnalyzer(code) {
+//   const messages = [
+//     new SystemMessage(`
+//       Analyze the code and return ONLY the worst-case time and space complexities in Big O notation.
+//       Format your response in json exactly like this example:
+//       Time: O(n log n)
+//       Space: O(n)
+
+//       Use standard complexity notations: O(1), O(log n), O(n), O(n log n), O(n^2), O(n^3), O(2^n)
+//       Don't include any other text or explanations.
+//     `),
+//     new HumanMessage(code),
+//   ];
+
+//   const response = await model.pipe(parser).invoke(messages);
+//   return response.trim();
+// }
+
 async function codeComplexityAnalyzer(code) {
   const messages = [
     new SystemMessage(`
-      Analyze the code and return ONLY the worst-case time and space complexities in Big O notation.
-      Format your response in json exactly like this example:
-      Time: O(n log n)
-      Space: O(n)
-      
-      Use standard complexity notations: O(1), O(log n), O(n), O(n log n), O(n^2), O(n^3), O(2^n)
-      Don't include any other text or explanations.
+     Analyze the provided code and return the worst-case time complexity and space complexity in Big O notation. Respond strictly in the following JSON format: {"tc": "O(n)", "sc": "O(1)"}. Use standard notations: O(1), O(logn), O(n), O(nlogn), O(n^2), O(n^3), O(2^n). Do not include any additional text or explanations.
     `),
     new HumanMessage(code),
   ];
 
   const response = await model.pipe(parser).invoke(messages);
-  return response.trim();
+  let data = response.trim();
+  return data;
 }
 
 async function feedbackReport(code) {
