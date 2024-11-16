@@ -47,24 +47,6 @@ async function problemExplainer(problemStatement, userPrompt) {
   return response;
 }
 
-// async function codeComplexityAnalyzer(code) {
-//   const messages = [
-//     new SystemMessage(`
-//       Analyze the code and return ONLY the worst-case time and space complexities in Big O notation.
-//       Format your response in json exactly like this example:
-//       Time: O(n log n)
-//       Space: O(n)
-
-//       Use standard complexity notations: O(1), O(log n), O(n), O(n log n), O(n^2), O(n^3), O(2^n)
-//       Don't include any other text or explanations.
-//     `),
-//     new HumanMessage(code),
-//   ];
-
-//   const response = await model.pipe(parser).invoke(messages);
-//   return response.trim();
-// }
-
 async function codeComplexityAnalyzer(code) {
   const messages = [
     new SystemMessage(`
@@ -74,7 +56,10 @@ async function codeComplexityAnalyzer(code) {
   ];
 
   const response = await model.pipe(parser).invoke(messages);
-  let data = response.trim();
+  let data = response
+    .replace(/```json|```/g, '')
+    .replace(/\n/g, '')
+    .trim();
   return data;
 }
 

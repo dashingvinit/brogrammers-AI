@@ -53,10 +53,10 @@ async function getVisual(req, res) {
 async function analyze(req, res) {
   try {
     let data = await LangChainService.codeComplexityAnalyzer(req.body.data);
-    data = data
-      .replace(/```json|```/g, '')
-      .replace(/\n/g, '')
-      .trim();
+    // data = data.replace(/```json|```/g, '')
+    // .replace(/\n/g, '')
+    // .trim();
+
     const json = JSON.parse(data);
     successResponse.data = json;
     return res.status(StatusCodes.OK).json(successResponse);
