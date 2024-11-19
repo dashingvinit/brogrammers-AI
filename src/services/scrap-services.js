@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 
 async function scrapeGoogleSearch(topic, title) {
   try {
-    const query = `videos on ${topic} ${title}`;
+    const query = `videos on ${title} ${topic}`;
     const url = `https://www.google.com/search?q=${query.replace(' ', '+')}&tbm=vid`;
 
     const headers = {
