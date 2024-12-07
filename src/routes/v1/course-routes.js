@@ -1,11 +1,8 @@
 const express = require('express');
+const { uploadMiddleware } = require('../../config/multer');
 const router = express.Router();
 
-const {
-  CourseController,
-  TopicController,
-  QuizController,
-} = require('../../controllers');
+const { CourseController, TopicController, QuizController } = require('../../controllers');
 
 // Course Routes
 router.get('/all', CourseController.getCourses);
@@ -13,8 +10,10 @@ router.get('/all/:id', CourseController.getCoursesById);
 router.get('/admin', CourseController.getAdminCourses);
 router.get('/:id', CourseController.getCourse);
 router.get('/recent/:id', CourseController.getRecent);
+// Langchain Routes
+router.post('/chat', CourseController.getAnswer);
 
-router.post('/new', CourseController.createCourse);
+router.post('/new', uploadMiddleware, CourseController.createCourse);
 router.patch('/:id', CourseController.updateCourse);
 
 router.patch('/obj/:id', CourseController.updateCourseObject);

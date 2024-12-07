@@ -52,13 +52,33 @@ async function getKeyNotes(title) {
   }
 }
 
-async function getRoadMap(title, time) {
-  const roadMapPrompt = `generate a roadmap for ${title} in JSON format based on the provided time ${time}.
-    
-    The roadmap should include units with titles, estimated time, and topics.
-    
-  Here is the example: '{"units": [{"title": "Unit 1","time": "25 mins","topics": ["Topic 1", "Topic 2", "Topic 3"]},{"title": "Unit 2","time": "1 hour","topics": ["Topic 1", "Topic 2", "Topic 3"]}]}' just return JSON dont give additional texts or explanations`;
+async function getRoadMap(title, depth, level, language) {
+  const roadMapPrompt = `
+  Generate a roadmap for "${title}" in JSON format based on the provided information.
 
+  - Depth: ${depth} (e.g., Introductory, Overview, Specialized)
+  - Level: ${level} (e.g., High School, Undergraduate, Research)
+  - Language: ${language}
+  
+  The roadmap should include units with titles, estimated time, and topics. The structure should look like this:
+  
+  {
+    "units": [
+      {
+        "title": "Unit 1",
+        "time": "25 mins",
+        "topics": ["Topic 1", "Topic 2", "Topic 3"]
+      },
+      {
+        "title": "Unit 2",
+        "time": "1 hour",
+        "topics": ["Topic 1", "Topic 2", "Topic 3"]
+      }
+    ]
+  }
+  
+  Only return the JSON, without additional texts or explanations.
+`;
   try {
     const result = await model.generateContent(roadMapPrompt);
     const response = await result.response;
@@ -89,21 +109,46 @@ async function getRoadMap(title, time) {
   }
 }
 
-async function getTopic(id, subject, title, time) {
+async function getTopic(id, subject, title, language, depth, context) {
   try {
-    const prompt = `## What is ${title} of ${subject}. Cover all the topics realted to this topic.
-      For all subjects: Leverage definations, tables, graphs to visually explain complex points.
-      For specific subjects:
-      
-      CSE (C++): if applicable include relevant code snippets for subjects like data structures and algorithms with clear comments explaining each line's purpose, for algorithms give time and space complexities.
-      Keep it short and to the point. Dont give large passages to read.`;
+    const prompt = `
+## Topic Overview: ${title} (${subject})
+
+Create an explanation for "${title}" under the subject "${subject}" in ${language}, tailored to the specified depth level: ${depth} (e.g., Introductory, Overview, Specialized). Ensure the explanation is well-structured, engaging, and concise, catering to students with a background in ${context}.
+
+### Content Guidelines:
+1. **Clarity & Engagement**:
+   - Use visual aids like tables, graphs, and diagrams to simplify complex concepts.
+   - Incorporate real-world examples or applications to make the content relatable and practical.
+
+2. **Subject-Specific Focus**:
+   - For technical topics such as Data Structures, Algorithms (DSA), Object-Oriented Programming (OOPS), or Design and Analysis of Algorithms (DAA) in C++:
+     - Include code snippets with detailed comments explaining each line or section.
+     - Highlight essential algorithms and provide an analysis of time and space complexity.
+
+3. **Brevity & Structure**:
+   - Keep explanations concise and to the point, avoiding unnecessary details.
+   - Use bullet points or numbered lists for clarity and improved readability.
+
+4. **Depth & Adaptability**:
+   - Adjust content depth based on the specified level (Introductory, Overview, or Specialized).
+   - Align explanations with the students' educational background and their learning objectives.
+
+### Output Format:
+- Use headings and subheadings to organize content logically.
+- Leverage Markdown elements like tables, lists, and pseudocode to represent information effectively.
+- Provide code snippets (where applicable) for programming-related topics, ensuring clarity and relevance.
+
+### Reminder:
+- Focus strictly on the requested content. Avoid unrelated details or unnecessary elaborations.
+`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let data = await response.text();
 
     const suggestedVideos = await scrapeGoogleSearch(subject, title);
-    if (!data || data == null) data = 'Gemini model couldnt generate for some reason';
+    if (!data || data == null) return null;
 
     const topic = await topicRepository.create({
       courseId: id,

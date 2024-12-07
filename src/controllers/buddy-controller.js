@@ -2,6 +2,8 @@ const { StatusCodes } = require('http-status-codes');
 const { ProblemServices, SolutionServices, LangChainService } = require('../services');
 const { successResponse, errorResponse } = require('../utils/common');
 
+const langChainService = new LangChainService();
+
 async function getProblem(req, res) {
   try {
     const data = await ProblemServices.getProblem(req.params.id);
@@ -15,7 +17,7 @@ async function getProblem(req, res) {
 
 async function getExplanation(req, res) {
   try {
-    const data = await LangChainService.problemExplainer(req.body.data);
+    const data = await langChainService.problemExplainer(req.body.data);
     successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
@@ -26,7 +28,7 @@ async function getExplanation(req, res) {
 
 async function getHint(req, res) {
   try {
-    const data = await LangChainService.hintGenerator(
+    const data = await langChainService.hintGenerator(
       req.body.problemStatement,
       req.body.prevHints
     );
@@ -40,8 +42,7 @@ async function getHint(req, res) {
 
 async function getVisual(req, res) {
   try {
-    console.log('hello', req.body);
-    const data = await LangChainService.codeExplainer(req.body.data);
+    const data = await langChainService.codeExplainer(req.body.data);
     successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
@@ -52,11 +53,7 @@ async function getVisual(req, res) {
 
 async function analyze(req, res) {
   try {
-    let data = await LangChainService.codeComplexityAnalyzer(req.body.data);
-    // data = data.replace(/```json|```/g, '')
-    // .replace(/\n/g, '')
-    // .trim();
-
+    let data = await langChainService.codeComplexityAnalyzer(req.body.data);
     const json = JSON.parse(data);
     successResponse.data = json;
     return res.status(StatusCodes.OK).json(successResponse);
@@ -68,7 +65,7 @@ async function analyze(req, res) {
 
 async function getFeedback(req, res) {
   try {
-    const data = await LangChainService.feedbackReport(req.body.data);
+    const data = await langChainService.feedbackReport(req.body.data);
     successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {

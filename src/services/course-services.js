@@ -20,10 +20,7 @@ async function getCourses() {
     return courses;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find courses',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find courses', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -33,10 +30,7 @@ async function getCoursesById(id) {
     return courses;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find courses',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find courses', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -48,10 +42,7 @@ async function getAdminCourses() {
     return courses;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find the course',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find the course', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -61,10 +52,7 @@ async function getCourse(id) {
     return course;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find the course',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find the course', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -74,30 +62,19 @@ async function getRecent(id) {
     return recent;
   } catch (error) {
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot find courses',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot find courses', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
 async function createCourse(data) {
   try {
-    const course = await courseRepository.create({
-      title: data.title,
-      userId: data.userId,
-      units: data.units,
-      keyNotes: data.keyNotes,
-    });
+    const course = await courseRepository.create(data);
     if (course) await userRepository.updateTrialStatus(data.userId);
     return course;
   } catch (error) {
     console.log(error);
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot create a new Course object',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot create a new Course object', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -146,10 +123,7 @@ async function updateCourse(id, updates) {
   } catch (error) {
     console.log(error);
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot update the Course object',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot update the Course object', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -161,16 +135,10 @@ async function deleteCourse(id) {
     const removeQuiz = await quizRepository.removeQuiz(id);
     const course = await courseRepository.destroy(id);
     if (!course) {
-      throw new AppError(
-        'no course exist for the given Id',
-        StatusCodes.BAD_REQUEST
-      );
+      throw new AppError('no course exist for the given Id', StatusCodes.BAD_REQUEST);
     }
   } catch (error) {
-    throw new AppError(
-      'Cannot delete the course',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot delete the course', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 
@@ -179,10 +147,7 @@ async function updateCourseObject(id, course) {
     const updatedCourse = await courseRepository.update(id, course);
     return updatedCourse;
   } catch (error) {
-    throw new AppError(
-      'Cannot update the course',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot update the course', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 

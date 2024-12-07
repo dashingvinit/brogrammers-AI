@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const unitSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  time: { type: String }, // Made `required` true as well
-  topics: [{ type: String, required: true }], // Each topic is required
+  time: { type: String },
+  topics: [{ type: String, required: true }],
 });
 
 const courseSchema = new Schema({
@@ -14,6 +14,10 @@ const courseSchema = new Schema({
     required: true,
   },
   title: { type: String, required: true },
+  language: { type: String, required: true, default: 'English' },
+  level: { type: String, required: true },
+  depth: { type: String, required: true },
+  docChat: { type: Boolean, default: false },
   units: {
     type: [unitSchema],
     validate: [arrayLimit, 'Units array cannot be empty'],
@@ -21,13 +25,12 @@ const courseSchema = new Schema({
   },
   keyNotes: [{ title: { type: String }, content: { type: String } }],
   aiGeneratedQuizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
-  worksheets: [{ title: { type: String }, link: { type: String } }],
+  //resources
   syllabus: { type: String },
+  worksheets: [{ title: { type: String }, link: { type: String } }],
   resources: [{ type: String }],
   handwrittenNotes: { type: String },
-  discussion: [
-    { commentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment' } },
-  ],
+  discussion: [{ commentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment' } }],
   createdDate: { type: Date, default: Date.now },
 });
 

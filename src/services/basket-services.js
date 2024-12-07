@@ -16,6 +16,7 @@ async function getBaskets() {
 
 async function getById(id) {
   try {
+    if (!id) throw new AppError('Id is required', StatusCodes.BAD_REQUEST);
     const basket = await basketRepository.get(id);
     return basket;
   } catch (error) {
@@ -26,15 +27,13 @@ async function getById(id) {
 
 async function createBasket(data) {
   try {
+    if (!data) throw new AppError('Data is required', StatusCodes.BAD_REQUEST);
     const basket = await basketRepository.create(data);
     return basket;
   } catch (error) {
     console.log(error);
     if (error instanceof AppError) throw error;
-    throw new AppError(
-      'Cannot create a new Course object',
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw new AppError('Cannot create a new Course object', StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
 

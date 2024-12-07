@@ -1,6 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const { CourseService, OpenAIService } = require('../services');
 const { successResponse, errorResponse } = require('../utils/common');
+const LangChainService = require('../langchain/course-service');
 
 async function getCourses(req, res) {
   try {
@@ -59,27 +60,44 @@ async function getRecent(req, res) {
 
 async function createCourse(req, res) {
   try {
-    let { userId, title, units, time } = req.body;
-    if (!units || !units[0]?.title) {
-      units = await OpenAIService.getRoadMap(title, time);
+    const { userId, title, level, language, depth, doc } = req.body;
+
+    if (!userId || !title || !level || !language || !depth) {
+      throw new AppError('All fields are required', StatusCodes.BAD_REQUEST);
     }
 
-    const data = await CourseService.createCourse({
-      userId,
-      title,
-      units,
-    });
+    let units, keyNotes;
+    if (doc === 'true') {
+      ({ units, keyNotes } = await LangChainService.saveCourse(userId, title));
+      if (!keyNotes) return res.status(StatusCodes.BAD_REQUEST).json(errorResponse);
+      units = units.units;
+    } else {
+      units = await OpenAIService.getRoadMap(title, depth, level, language);
+    }
 
+    const course = { userId, title, units, level, depth, language, keyNotes };
+    const data = await CourseService.createCourse(course);
     successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
     console.error('Error creating course:', error);
-    return res
-      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({
-        success: false,
-        error: error.message,
-      });
+    return res.status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: error.message,
+    });
+  }
+}
+
+async function getAnswer(req, res) {
+  try {
+    const { userId, title, input } = req.body;
+    const answer = await LangChainService.getAnswer(userId, title, input);
+    console.log('Controller', answer);
+    successResponse.data = answer;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
   }
 }
 
@@ -141,6 +159,7 @@ module.exports = {
   getCourse,
   getRecent,
   getKeyNote,
+  getAnswer,
 
   createCourse,
   updateCourse,

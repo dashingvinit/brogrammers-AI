@@ -1,46 +1,34 @@
 const { StatusCodes } = require('http-status-codes');
-const { TopicService } = require('../services');
+const { TopicService, OpenAIService, CourseService } = require('../services');
 const { successResponse, errorResponse } = require('../utils/common');
-const { OpenAIService } = require('../services');
+const { getAnswer } = require('../langchain/course-service');
 
 async function getTopic(req, res) {
   try {
-    let topic = await TopicService.getTopic(
+    const topic = await TopicService.getTopic(req.params.courseId, req.params.title);
+    if (topic) {
+      return res.status(StatusCodes.OK).json({ data: topic });
+    }
+    const course = await CourseService.getCourse(req.params.courseId);
+    const context = await getAnswer(course.userId, course.title, req.params.title);
+    const generatedTopic = await OpenAIService.getTopic(
       req.params.courseId,
-      req.params.title
+      course.title,
+      req.params.title,
+      course.language,
+      course.depth,
+      context
     );
-    if (!topic) {
-      throw new Error('Cannot find topic');
-    }
-    successResponse.data = topic;
-    return res.status(StatusCodes.OK).json(successResponse);
+    return res.status(StatusCodes.OK).json({ data: generatedTopic });
   } catch (error) {
-    if (error.message === 'Cannot find topic') {
-      try {
-        topic = await OpenAIService.getTopic(
-          req.params.courseId,
-          req.params.subject,
-          req.params.title
-        );
-        successResponse.data = topic;
-        return res.status(StatusCodes.OK).json(successResponse);
-      } catch (openAIError) {
-        errorResponse.error = openAIError;
-        return res.status(openAIError.statusCode).json(errorResponse);
-      }
-    } else {
-      errorResponse.error = error;
-      return res.status(error.statusCode).json(errorResponse);
-    }
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
   }
 }
 
 async function deleteTopic(req, res) {
   try {
-    const topic = await TopicService.getTopic(
-      req.params.courseId,
-      req.params.title
-    );
+    const topic = await TopicService.getTopic(req.params.courseId, req.params.title);
     if (!topic) {
       throw new Error('Cannot find topic');
     }
@@ -48,18 +36,24 @@ async function deleteTopic(req, res) {
     successResponse.data = deletedTopic;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error.message || 'An error occurred while deleting the topic',
-    });
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
   }
 }
 
 async function updateTopic(req, res) {
-  // Implement updateUnit functionality
+  try {
+    const data = await OpenAIService.regernTopic(req.body.prompt);
+    successResponse.data = data;
+    return res.status(StatusCodes.OK).json(successResponse);
+  } catch (error) {
+    errorResponse.error = error;
+    return res.status(error.statusCode).json(errorResponse);
+  }
 }
 
 module.exports = {
   getTopic,
-  //   updateTopic,
   deleteTopic,
+  updateTopic,
 };

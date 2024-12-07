@@ -1,6 +1,6 @@
 module.exports = {
   OpenAIService: require('./open-ai-services'),
-  LangChainService: require('./langchain-services'),
+  LangChainService: require('./codeAnalysis-service'),
   UserService: require('./user-services'),
   CourseService: require('./course-services'),
   TopicService: require('./topic-services'),

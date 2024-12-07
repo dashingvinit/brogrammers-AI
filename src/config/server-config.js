@@ -8,7 +8,7 @@ module.exports = {
   JWT_EXPIRY: process.env.JWT_EXPIRY,
   JWT_SECRET: process.env.JWT_SECRET,
   //llm keys
-  GEMINI_KEY: process.env.GEMINI_KEY,
+  GEMINI_KEY: process.env.GOOGLE_API_KEY,
   OPENAI_KEY: process.env.OPENAI_API_KEY,
   MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
 

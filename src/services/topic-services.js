@@ -24,4 +24,14 @@ async function deleteTopic(id) {
   }
 }
 
-module.exports = { getTopic, deleteTopic };
+async function createTopic(data) {
+  try {
+    const topic = await topicRepository.create(data);
+    return topic;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError('Cannot create topic', StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
+module.exports = { getTopic, deleteTopic, createTopic };
