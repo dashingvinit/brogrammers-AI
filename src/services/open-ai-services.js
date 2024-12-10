@@ -67,12 +67,22 @@ async function getRoadMap(title, depth, level, language) {
       {
         "title": "Unit 1",
         "time": "25 mins",
-        "topics": ["Topic 1", "Topic 2", "Topic 3"]
+        "topics": [
+                { 
+                  name: String, 
+                  cover: "Group all subtopics it needs to cover" 
+                }
+              ]
       },
       {
         "title": "Unit 2",
         "time": "1 hour",
-        "topics": ["Topic 1", "Topic 2", "Topic 3"]
+        "topics": [
+                { 
+                  name: String, 
+                  cover: "Group all subtopics it needs to cover" 
+                }
+              ]
       }
     ]
   }
@@ -111,10 +121,9 @@ async function getRoadMap(title, depth, level, language) {
 
 async function getTopic(id, subject, title, language, depth, context) {
   try {
-    const prompt = `
-## Topic Overview: ${title} (${subject})
+    const prompt = ` You are an expert in ${subject} and you are given a context to use for the topic ${title}.
 
-Create an explanation for "${title}" under the subject "${subject}" in ${language}, tailored to the specified depth level: ${depth} (e.g., Introductory, Overview, Specialized). Ensure the explanation is well-structured, engaging, and concise, catering to students with a background in ${context}.
+Create an explanation for "${title}" under the subject "${subject}" in ${language}, use this as context: ${context}, tailored to the specified depth level: ${depth} (e.g., Introductory, Overview, Specialized). Ensure the explanation is well-structured, and concise.
 
 ### Content Guidelines:
 1. **Clarity & Engagement**:
@@ -136,8 +145,9 @@ Create an explanation for "${title}" under the subject "${subject}" in ${languag
 
 ### Output Format:
 - Use headings and subheadings to organize content logically.
-- Leverage Markdown elements like tables, lists, and pseudocode to represent information effectively.
-- Provide code snippets (where applicable) for programming-related topics, ensuring clarity and relevance.
+- Leverage Markdown elements liketables, lists to represent information effectively.
+- Do not use code blocks for texts
+
 
 ### Reminder:
 - Focus strictly on the requested content. Avoid unrelated details or unnecessary elaborations.

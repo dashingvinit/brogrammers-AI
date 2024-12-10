@@ -1,20 +1,25 @@
 const { StatusCodes } = require('http-status-codes');
 const { TopicService, OpenAIService, CourseService } = require('../services');
 const { successResponse, errorResponse } = require('../utils/common');
-const { getAnswer } = require('../langchain/course-service');
+const AiCourseService = require('../langchain/course-service');
 
 async function getTopic(req, res) {
   try {
-    const topic = await TopicService.getTopic(req.params.courseId, req.params.title);
+    const topic = await TopicService.getTopic(req.params.courseId, req.body.topic.name);
     if (topic) {
       return res.status(StatusCodes.OK).json({ data: topic });
     }
     const course = await CourseService.getCourse(req.params.courseId);
-    const context = await getAnswer(course.userId, course.title, req.params.title);
+
+    let context = 'No context use your knowledge to generate a topic';
+    if (course.docChat)
+      context = await AiCourseService.getContext(course.userId, course.title, req.body.topic);
+
     const generatedTopic = await OpenAIService.getTopic(
       req.params.courseId,
       course.title,
-      req.params.title,
+      req.body.topic.name,
+      req.body.topic.cover,
       course.language,
       course.depth,
       context

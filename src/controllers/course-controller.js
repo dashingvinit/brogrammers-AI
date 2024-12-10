@@ -60,14 +60,14 @@ async function getRecent(req, res) {
 
 async function createCourse(req, res) {
   try {
-    const { userId, title, level, language, depth, doc } = req.body;
+    const { userId, title, level, language, depth, docChat } = req.body;
 
     if (!userId || !title || !level || !language || !depth) {
       throw new AppError('All fields are required', StatusCodes.BAD_REQUEST);
     }
 
     let units, keyNotes;
-    if (doc === 'true') {
+    if (docChat) {
       ({ units, keyNotes } = await LangChainService.saveCourse(userId, title));
       if (!keyNotes) return res.status(StatusCodes.BAD_REQUEST).json(errorResponse);
       units = units.units;
@@ -75,7 +75,8 @@ async function createCourse(req, res) {
       units = await OpenAIService.getRoadMap(title, depth, level, language);
     }
 
-    const course = { userId, title, units, level, depth, language, keyNotes };
+    const course = { userId, title, units, level, depth, language, keyNotes, docChat };
+
     const data = await CourseService.createCourse(course);
     successResponse.data = data;
     return res.status(StatusCodes.OK).json(successResponse);
@@ -92,7 +93,7 @@ async function getAnswer(req, res) {
   try {
     const { userId, title, input } = req.body;
     const answer = await LangChainService.getAnswer(userId, title, input);
-    console.log('Controller', answer);
+
     successResponse.data = answer;
     return res.status(StatusCodes.OK).json(successResponse);
   } catch (error) {

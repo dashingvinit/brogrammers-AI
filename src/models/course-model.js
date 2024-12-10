@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const unitSchema = new mongoose.Schema({
   title: { type: String, required: true },
   time: { type: String },
-  topics: [{ type: String, required: true }],
+  topics: [{ name: { type: String }, cover: { type: String } }],
 });
 
 const courseSchema = new Schema({

@@ -22,7 +22,7 @@ router.patch('/keynotes/:courseId/:title', CourseController.getKeyNote);
 router.delete('/:userId/:id', CourseController.deleteCourse);
 
 // Topic Routes
-router.get('/topic/:courseId/:subject/:title', TopicController.getTopic);
+router.post('/topic/:courseId', TopicController.getTopic);
 router.delete('/topic/:courseId/:title', TopicController.deleteTopic);
 
 // Quize Routes

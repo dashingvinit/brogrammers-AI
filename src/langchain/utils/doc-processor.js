@@ -1,6 +1,5 @@
 const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 const { RecursiveCharacterTextSplitter } = require('langchain/text_splitter');
-const path = require('path');
 
 const loadPDF = (filePath) => {
   const loader = new PDFLoader(filePath);

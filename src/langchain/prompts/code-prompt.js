@@ -1,5 +1,4 @@
 const { SystemMessage, HumanMessage } = require('@langchain/core/messages');
-const { PromptTemplate } = require('@langchain/core/prompts');
 
 const PROMPT_TEMPLATES = {
   CODE_EXPLAINER: (code) => [
