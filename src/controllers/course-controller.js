@@ -67,7 +67,7 @@ async function createCourse(req, res) {
     }
 
     let units, keyNotes;
-    if (docChat) {
+    if (docChat === 'true') {
       ({ units, keyNotes } = await LangChainService.saveCourse(userId, title));
       if (!keyNotes) return res.status(StatusCodes.BAD_REQUEST).json(errorResponse);
       units = units.units;
